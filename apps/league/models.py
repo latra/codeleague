@@ -13,6 +13,7 @@ class Category(models.Model):
     name = models.CharField(max_length=25, unique=True)
     description = models.TextField()
 
+
 class Competition(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
@@ -20,12 +21,14 @@ class Competition(models.Model):
     data_finish_inscription = models.DateTimeField(null=False)
     data_start_competition = models.DateTimeField(null=False)
     data_finish_competition = models.DateTimeField(null=False)
-    categories = models.ManyToManyField(Category)
+    categories = models.ManyToManyField(Category, on_delete=models.CASCADE)
+
 
 class Team(models.Model):
     name = models.CharField(max_length=25, unique=True)
     ranking = models.ForeignKey('Ranking', on_delete=models.CASCADE)
     members = models.ManyToManyField(User, related_name='participants')
+
 
 class Ranking(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
