@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/django,pycharm,visualstudiocode,venv,python
-# Edit at https://www.gitignore.io/?templates=django,pycharm,visualstudiocode,venv,python
+# Created by https://www.gitignore.io/api/pycharm,python,venv,visualstudiocode,django
+# Edit at https://www.gitignore.io/?templates=pycharm,python,venv,visualstudiocode,django
 
 ### Django ###
 *.log
@@ -278,4 +278,4 @@ pip-selfcheck.json
 # Ignore all local history of files
 .history
 
-# End of https://www.gitignore.io/api/django,pycharm,visualstudiocode,venv,python
+# End of https://www.gitignore.io/api/pycharm,python,venv,visualstudiocode,django
