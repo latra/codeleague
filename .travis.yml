@@ -4,4 +4,12 @@ python:
 install:
 - pip install -r requirements.txt
 script:
-  - python manage.py test codeleague
+- python manage.py test codeleague
+deploy:
+  provider: heroku
+  api_key:
+    secure: 4yHnQdHTL97L76TvNOhP/RAWNVjS1xqhsXlJf1YBbugzgHZLDs6iBE89B/z3n81kuMFOuOWMkGbUfKu7CS4BeUJi8fQnE9GA5i2pMf3EhEzBYBL5plLHrrE5ccD1DnAX/gHY+PJr2wEaSMYBLEqEX636Z1+pR9g1soHcMfaWfmydPFAJIy+Lh1W6zKCCUYs3unSEU9NJX8wCMJN7CFgEUVRxeVZh6JAQa86g9H+io3kgyfDDWKpLk40vj5VBGQ/2SmGvNLp16DYRUmVrqnJXuJlrz+AxOHynJq5NZe8elw3WfoCXVGRnBWz29h1ykPzmrDtrnIKcxNJfq1zqahubquLyMVUOp8hQo++NFDU2tgq67WsecPVr6k8ygXZBLPGUV4eSdvvAe3pALTiFQ6PDCVP2Hb6CEOGHFAxI/lLJNUHpnzwwRMEv2K6Ikphpt2P2eR3FcI2zd3OU8XVTgLSLECQyvW/UFAVeCUQ9FEqi20WJa34+hWjPMow0rHOHhnDr7h1mWD329ZHsmm/hqFAMs53EMBELxcP98+M8gzPmU3j3q+X/RbNLZSyVlarJ7qQWLkngJ/nf7KXjhYBhkBtH8g9H4n3RyHfxsngaAdnrvwyl2QBdvShDfVINyI3vEz1ZfZpKKxpGOI0iWRzL6PtwdNulrHkD4zmCXvBJMHpdjps=
+  app: codeleague-wp
+  on:
+    repo: Oriolac/codeleague
+    branch: master
