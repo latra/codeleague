@@ -1,1 +1,1 @@
-web: gunicorn skeleton.wsgi --log-file -
+web: gunicorn codeleague.wsgi --log-file -
