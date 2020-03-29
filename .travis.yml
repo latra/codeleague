@@ -1,12 +1,10 @@
-addons:
-  apt:
-    packages:
-    - docker-ce
+languange: python
+python:
+  - '3.6'
+install:
+  - pip install -r requirements
 script:
-- cp .env.example .env
-- docker-compose up -d
-- docker-compose exec web python3 manage.py test apps
-- docker-compose down
+  - python manage.py test codeleague
 deploy:
   provider: heroku
   api_key:
