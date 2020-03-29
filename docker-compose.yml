@@ -7,12 +7,12 @@ services:
         restart: unless-stopped
         volumes:
             - .:/app
+        env_file:
+            - .env.sample
         ports:
-            - "80:${DJANGO_PORT}"
+            - "80:8000"
         depends_on:
             - db
-        env_file:
-          - .env.sample
         command: sh ./docker-web-commands.sh
 
     db:
@@ -21,7 +21,8 @@ services:
         container_name: postgres-cont
         volumes:
             # /host/path:/container/path
-            - ./postgresdata/:/var/lib/postgresql/data/
-
+            - ./postgresdata/data:/var/lib/postgresql/data/
+        env_file:
+          - .env.sample
 volumes:
     postgresdata:
