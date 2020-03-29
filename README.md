@@ -1,6 +1,11 @@
-# Project Title
+# Codeleague
 
-One Paragraph of project description goes here
+This is a project for an application where programming competitions are displayed, so that everyone would be able to see all the competitions, but only the users who have signed up could participate.
+
+When a registered user want to participate in a competition, if they do not have a team, they would have to create a new one. But, if they want to be in a team which already exists, they would have to provide the id of the team, in order to be part of it.
+The teams would be between one and four participants, and every team would be exclusive of a competition.
+
+The day of the competition, all the necessary documents for the participants will be showed on the page. Finally, at the end of the competition, the teams will be able to submit all their work, and the server will replay them with a punctuation for the ranking. Finally, the competition will show a ranking of the teams.
 
 ## Getting Started
 
@@ -8,80 +13,79 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Docker and docker-compose have to be installed. You can install them by using the following command:
 
 ```
-Give examples
+$ python3 -m pip install docker-compose
 ```
 
-### Installing
+### Run locally with Docker
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+In order to build the project is necessary to be logged on docker
 
 ```
-Give the example
+$ docker-compose up --build
 ```
 
-And repeat
+### Configuration
+
+The server will be set up by default on port 8000
+
+You can access to the database using the default postgres user. Eventhough, you also can create a new user in postgres. To do that you have to run the following commands:
 
 ```
-until finished
+$ psql
+
+# CREATE USER <name-user> WITH PASSWORD '<password>'
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+Copy '.env.sample' to a file named '.env'. You will only have to change the variable DJANGO_SECRET_KEY for a value you will have to generate.
 
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+So, the contents you should have in .env file are:
 
 ```
-Give an example
+#------------------------------------------------------------------------------#
+#---------------------------- Django configuration ----------------------------#
+#------------------------------------------------------------------------------#
+DJANGO_PORT=8000
+
+DJANGO_SECRET_KEY=<your secret key>
+DJANGO_DEBUG=1
+DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 0.0.0.0 [::1]
+
+DJANGO_SQL_POSTGRES_ENGINE=django.db.backends.postgresql
+
+DJANGO_ADMIN_USERNAME=admin
+DJANGO_ADMIN_PASSWORD=admin
+DJANGO_ADMIN_EMAIL=admin@example.com
+
+#------------------------------------------------------------------------------#
+#--------------------------- Postgres configuration ---------------------------#
+#------------------------------------------------------------------------------#
+POSTGRES_DB=codeleaguedb
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
 ```
 
-### And coding style tests
+## Built and deployed with
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+* [GitHub](http://www.github.com) - Software development platform
+* [Django](https://www.djangoproject.com) - Web framework used in the project
+* [Travis](https://travis-ci.org) - Test CI
+* [Docker](https://www.docker.com) - Container management
+* [Heroku](https://www.heroku.com) - Cloud Application Platform
+* [PostgreSQL](https://www.postgresql.org) - Open Source Database
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Oriol Alàs Cercós** 
+* **Marta Albets Mitjaneta**
+* **Paula Gallucci Zurita**
+* **Genís Graus Qui**
+* **Adrian Lorenzo Plaza**
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+This project is licensed under the GPLv3 License - see the [LICENSE](https://github.com/Oriolac/codeleague/blob/readme-branch/LICENSE) file for details.
