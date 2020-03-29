@@ -4,9 +4,9 @@ python:
 services:
   - docker
 install:
-  - docker-compose up --build -d
+  - docker-compose build
 script:
-  - docker-compose exec web python manage.py test codeleague
+  - docker-compose up -d
   - docker-compose down
 deploy:
   provider: heroku
