@@ -1,13 +1,13 @@
 language: python
 python:
-- '3.7'
+  - '3.6'
+services:
+  - docker
 install:
-- pip install -r requirements.txt
-before_script:
-  - python manage.py collectstatic --noinput
-  - python manage.py migrate
+  - docker-compose build
 script:
-- python manage.py test codeleague
+  - docker-compose up -d
+  - docker-compose down
 deploy:
   provider: heroku
   api_key:

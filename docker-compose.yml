@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+    web:
+        build: .
+        container_name: codeleague-cont
+        restart: unless-stopped
+        volumes:
+            - .:/app
+        env_file:
+            - .env.sample
+        ports:
+            - "80:8000"
+        depends_on:
+            - db
+        command: sh ./docker-web-commands.sh
+
+    db:
+        build: ./postgresdata
+        image: postgres:11
+        container_name: postgres-cont
+        volumes:
+            # /host/path:/container/path
+            - ./postgresdata/data:/var/lib/postgresql/data/
+        env_file:
+          - .env.sample
+volumes:
+    postgresdata:
