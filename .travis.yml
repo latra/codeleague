@@ -1,13 +1,12 @@
-language: python
-python:
-- '3.7'
-install:
-- pip install -r requirements.txt
-before_script:
-  - python manage.py collectstatic --noinput
-  - python manage.py migrate
+addons:
+  apt:
+    packages:
+    - docker-ce
 script:
-- python manage.py test codeleague
+- cp .env.example .env
+- docker-compose up -d
+- docker-compose exec web python3 manage.py test apps
+- docker-compose down
 deploy:
   provider: heroku
   api_key:
