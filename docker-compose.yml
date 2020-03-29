@@ -21,7 +21,7 @@ services:
         container_name: postgres-cont
         volumes:
             # /host/path:/container/path
-            - postgresdata:/var/lib/postgresql/data/
+            - ./postgresdata/:/var/lib/postgresql/data/
 
 volumes:
     postgresdata:

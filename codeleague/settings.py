@@ -25,7 +25,7 @@ SECRET_KEY = 'wr_r#c8=tz!myr!gi6!-0(&09*bkff9fe1jq9!mh!x3wzm6wxl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*'] #['codeleague-wp.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['codeleague-wp.herokuapp.com', '127.0.0.1', '[::1]', 'localhost']
 
 
 # Application definition
