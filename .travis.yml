@@ -3,6 +3,9 @@ python:
   - '3.6'
 install:
   - pip install -r requirements
+before_script:
+  - python manage.py collectstatic --noinput
+  - python manage.py migrate
 script:
   - python manage.py test codeleague
 deploy:
