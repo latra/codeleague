@@ -6,6 +6,7 @@ services:
 install:
   - docker-compose build
 script:
+  - cp .env.sample .env
   - docker-compose up -d
   - docker-compose down
 deploy:
