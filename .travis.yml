@@ -3,10 +3,9 @@ python:
   - '3.6'
 services:
   - docker
-install:
-  - docker-compose build
 script:
   - cp .env.sample .env
+  - docker-compose build
   - docker-compose up -d
   - docker-compose down
 deploy:
