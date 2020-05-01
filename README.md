@@ -26,7 +26,15 @@ In order to build the project is necessary to be logged on docker
 ```
 $ docker-compose up --build
 ```
-
+Also, it is needed to do all the migrations if it is needed and migrate in order to create the database.
+```
+$ docker-compose exec web python manage.py makemigrations
+$ docker-compose exec web python manage.py migrate
+```
+Further more, it is a good practice to create a super user if it is needed a greater manage administration.
+```
+$ docker-compose exec web python manage.py createsuperuser
+```
 ### Configuration
 
 The server will be set up by default on port 8000
