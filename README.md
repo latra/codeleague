@@ -13,11 +13,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Docker and docker-compose have to be installed. You can install them by using the following command:
-
-```
-$ python3 -m pip install docker-compose
-```
+Docker and docker-compose have to be installed. Click [here](https://docs.docker.com/engine/install/). Be careful with docker daemon.
 
 ### Run locally with Docker
 
