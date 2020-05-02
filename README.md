@@ -21,7 +21,11 @@ $ python3 -m pip install docker-compose
 
 ### Run locally with Docker
 
-In order to build the project is necessary to be logged on docker
+In order to build the project is necessary to be logged on docker. Even though, you must use the template of .env.file in order to create your own environment.
+
+```
+$ cp .env.sample .env
+```
 
 ```
 $ docker-compose up --build

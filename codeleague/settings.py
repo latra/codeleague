@@ -84,7 +84,7 @@ DATABASES = {
         'PASSWORD': os.getenv('POSTGRES_PASSWORD')
     }
 }
-
+print(DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
