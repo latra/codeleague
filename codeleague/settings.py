@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ DEBUG = int(os.getenv('DJANGO_DEBUG'))
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS').split(" ")
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.league'
+    'apps.league',
+    'apps.account',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +54,7 @@ ROOT_URLCONF = 'codeleague.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,7 +69,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'codeleague.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -84,12 +82,10 @@ DATABASES = {
         'PASSWORD': os.getenv('POSTGRES_PASSWORD')
     }
 }
-print(DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = 'league.LeagueUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -106,7 +102,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -120,7 +115,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -128,3 +122,16 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+# Built-in User Authentication System
+LOGIN_REDIRECT_URL = 'account'  # home is the name of the url defined in the file urls.py
+LOGOUT_REDIRECT_URL = '/'  # home is the name of the url defined in the file urls.py
+
+# Adding AUTH_USER_MODEL tells Django that we are going to use a custom user model
+AUTH_USER_MODEL = 'account.LeagueUser'
+
+# By default, inactive users cannot attempt to log in. They will receive an error
+# message stating that the username and password are invalid. To avoid rejecting
+# inactive users to log in, we need to add AllowAllUsersModelBackend.
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',
+)
