@@ -13,7 +13,7 @@ class Category(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return f'{self.name}'
+        return f'Category {self.name}'
 
 
 class Competition(models.Model):
@@ -26,16 +26,22 @@ class Competition(models.Model):
     categories = models.ManyToManyField(Category)
 
     def __str__(self):
-        return f'{self.title}'
+        return f'Competition {self.title}'
 
 
 class Team(models.Model):
     name = models.CharField(max_length=25, unique=True)
-    ranking = models.ForeignKey('Ranking', on_delete=models.CASCADE)
+    ranking = models.ForeignKey('Ranking', on_delete=models.CASCADE, null=True)
     members = models.ManyToManyField(LeagueUser, related_name='participants')
+    competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return f'Team {self.name} in {self.competition} : {self.members}'
 
 
 class Ranking(models.Model):
-    #team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     score = models.PositiveIntegerField(null=False, default=0)
+
+    def __str__(self):
+
+        return f'Ranking: {self.score}'
