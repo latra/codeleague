@@ -20,7 +20,8 @@ from django.conf.urls.static import static
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
+                  path('', include('apps.league.urls')),
                   path('admin/', admin.site.urls),
                   path('accounts/', include('apps.account.urls')),
-                  path('', TemplateView.as_view(template_name='home.html'), name='home'),
+                  path('', TemplateView.as_view(template_name='home.html'), name='nohome'),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

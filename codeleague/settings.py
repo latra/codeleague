@@ -123,7 +123,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Built-in User Authentication System
-LOGIN_REDIRECT_URL = 'login/'  # home is the name of the url defined in the file urls.py
+LOGIN_REDIRECT_URL = '/'  # home is the name of the url defined in the file urls.py
 LOGOUT_REDIRECT_URL = '/'  # home is the name of the url defined in the file urls.py
 
 # Adding AUTH_USER_MODEL tells Django that we are going to use a custom user model

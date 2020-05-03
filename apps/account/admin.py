@@ -10,6 +10,6 @@ class UserAdmin(BaseUserAdmin):
     add_form = forms.UserCreationForm
     form = forms.UserChangeForm
     model = models.LeagueUser
-
+    list_display = ['email', 'github_link']
 
 admin.site.register(models.LeagueUser, UserAdmin)

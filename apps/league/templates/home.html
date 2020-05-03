@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        {% if user.is_authenticated %}
+            {% include "home/auth.html" %}
+        {% else %}
+            {% include "home/gen.html" %}
+        {% endif %}
+    </div>
+{% endblock %}
