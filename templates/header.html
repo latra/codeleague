@@ -1,6 +1,12 @@
 <header>
-  <nav class="navbar navbar-dark bg-dark d-flex justify-content-between">
-		<a class="navbar-brand" href="{% url 'home' %}">Home</a>
-		{% include "user_auth_state_bar.html" %}
-  </nav>
+    <nav class="navbar navbar-light bg-light justify-content-between navbar-expand-lg">
+        <a class="navbar-brand" href="{% url 'home' %}">Codeleague</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            {% include "user_auth_state_bar.html" %}
+        </div>
+    </nav>
 </header>

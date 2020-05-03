@@ -3,10 +3,9 @@
 {% block title %}Your account{% endblock %}
 
 {% block content %}
-ACCOUNT
 <div class="jumbotron">
   {% if user.is_authenticated %}
-  <p>Hi {{ user.username }} 🙂</p>
+  <h1>Hey, it's {{ user.username }}</h1>
   <p>You can see your account details here</p>
   {% else %}
   <p>You are not logged in. Log in to see your profile</p>

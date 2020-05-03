@@ -3,6 +3,11 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
+
+  {% if user.is_authenticated %}
+  <p>Hi {{ user.username }} 🙂</p>
+  <p>You are already authenticated</p>
+  {% else %}
 <div class="jumbotron">
   <div class="container">
     <div class="row d-flex justify-content-center">
@@ -23,4 +28,5 @@
     </div>
   </div>
 </div>
+    {% endif %}
 {% endblock %}
