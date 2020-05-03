@@ -1,5 +1,5 @@
 <div>
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">{% csrf_token %}
         <li class="nav-item px-3">
             <a class="nav-link" href="#">
                 Info
@@ -7,15 +7,15 @@
         </li>
         {% if user.is_authenticated %}
             <li class="nav-item px-3">
-                <a class="nav-link" href="{% url 'user_detail' user.pk %}">My Profile</a>
+                <a class="nav-link" href="{% url 'account:user_detail' user.pk %}">My Profile</a>
             </li>
             <li class="nav-item px-3">
-                <a class="btn btn-outline-secondary" href="{% url 'logout' %}">Logout</a>
+                <a class="btn btn-outline-secondary" href="{% url 'account:logout' %}">Logout</a>
             </li>
         {% else %}
             <li class="nav-item px-3">
-                <a class="btn btn-outline-primary" href="{% url 'sign-up' %}">Sign Up</a>
-                <a class="btn btn-outline-secondary" href="{% url 'login' %}">Login</a>
+                <a class="btn btn-outline-primary" href="{% url 'account:sign-up' %}">Sign Up</a>
+                <a class="btn btn-outline-secondary" href="{% url 'account:login' %}">Login</a>
             </li>
         {% endif %}
     </ul>
