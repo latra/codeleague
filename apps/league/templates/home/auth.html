@@ -4,11 +4,19 @@
 </div>
 <h1>Home</h1>
 <div class="container">
-    {% for foo in competitions %}
-    foo
+    {% for compet in competition_list %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ compet.title }}</h4>
+                        <p class="card-text">{{ compet.description }}</p>
+                        <a href="#" class="btn btn-primary float-right">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endfor %}
-
-    <div class="row1"></div>
 
 </div>
 
