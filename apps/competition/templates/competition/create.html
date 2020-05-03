@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="alert alert-warning" role="alert">
+            Hey, {{ user.username }}. You have already authenticated.
+        </div>
+    {% endif %}
+    <div class="jumbotron">
+        {% if user.is_authenticated %}
+
+            <h1>What can you do now?</h1>
+            <div class="row">
+                <div class="col-12 col-md-4 py-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Compete!</h5>
+                            <p class="card-text">Find a competition and enjoy programming! That's what you have registered, didn't you?</p>
+                            <a href="{% url 'nohome' %}" class="btn btn-primary float-right">Let's hack</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 py-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Update your profile!</h5>
+                            <p class="card-text">A cool profile means a cool hacker. Let's update your profile.</p>
+                            <a href="{% url 'nohome' %}" class="btn btn-primary float-right">My profile</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 py-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Create a competition!</h5>
+                            <p class="card-text">If you find a competition that would be enjoyable? Create one!</p>
+                            <a href="#" class="btn btn-primary float-right">Creator</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+
+
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-10">
+                        <form method="post">
+                            <h2>Sign up</h2>
+                            <div method="post" class="needs-validation" novalidate>
+                                {% csrf_token %}
+
+                                <div class="container">
+                                    {% for field in form %}
+                                        <div class="row">
+                                            {{ field.errors }}
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-5">
+                                                <label for="{{ field.id_for_label }}">{{ field.label_tag }} </label>
+                                            </div>
+                                            <div class="column">
+                                                {{ field }}
+                                            </div>
+                                            <div class="w-100"></div>
+                                        </div>
+
+                                        {% if field.help_text %}
+                                            <small style="color: grey">{{ field.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in field.errors %}
+                                            <p style="color: red">{{ error }}</p>
+                                        {% endfor %}
+
+                                    {% endfor %}
+                                    <div class="row">
+                                        <div class="col-5"></div>
+                                        <div class="col">
+                                            <button class="btn btn-warning" type="submit">Sign Up</button>
+                                        </div>
+                                    </div>
+                                </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+    </div>
+{% endblock %}

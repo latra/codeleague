@@ -23,5 +23,5 @@ urlpatterns = [
                   path('', include('apps.league.urls')),
                   path('admin/', admin.site.urls),
                   path('accounts/', include('apps.account.urls')),
-                  path('', TemplateView.as_view(template_name='home.html'), name='nohome'),
+                  path('competition/', include('apps.competition.urls')),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

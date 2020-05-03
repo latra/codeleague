@@ -1,7 +1,5 @@
-from django.urls import path, include
-from django.contrib.auth.views import LoginView
-from django.views.generic.base import TemplateView
-from apps.league import forms, views
+from django.urls import path
+from apps.league import views
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
