@@ -6,12 +6,11 @@
     <div class="jumbotron">
 
         <div class="container">
-            <a href="#" class="btn btn-primary float-right btn-lg" data-toggle="modal"
-                    data-target="#modal{{ competition.id }}">Join!
+            <a href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!
             </a>
             <h1>{{ competition.title }}</h1>
             <p>{{ competition.description }}</p>
-            {% include "competition/detail/modal.html" %}
+            {% include "team/join.html" %}
         </div>
     </div>
 {% endblock %}
