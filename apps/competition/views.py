@@ -7,7 +7,7 @@ from django.views import generic
 
 from apps.account.models import LeagueUser
 from apps.competition.forms import CompetitionCreationForm, TeamCreationForm
-from apps.league.models import Competition
+from apps.league.models import Competition, Category
 
 
 class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
@@ -70,3 +70,11 @@ class CreateTeam(LoginRequiredMixin, generic.CreateView):
         team.members.add(*users)
         team.competition = Competition.objects.get(id=self.kwargs['pk'])
         return super(CreateTeam, self).form_valid(form)
+
+class Categories(LoginRequiredMixin, generic.ListView):
+    model = Category
+    template_name = 'categories/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
