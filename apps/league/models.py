@@ -22,7 +22,7 @@ class Competition(models.Model):
     categories = models.ManyToManyField(Category, blank=True)
 
     def __str__(self):
-        return f'Competition {self.title}'
+        return f'{self.title}'
 
 
 class Team(models.Model):
