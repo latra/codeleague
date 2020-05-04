@@ -1,8 +1,13 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 # Register your models here.
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
+
 from apps.account import forms, models
+
+CustomUser = get_user_model()
 
 
 class UserAdmin(BaseUserAdmin):
@@ -10,6 +15,7 @@ class UserAdmin(BaseUserAdmin):
     add_form = forms.UserCreationForm
     form = forms.UserChangeForm
     model = models.LeagueUser
-    list_display = ['email', 'github_link']
+    list_display = ('email', 'GitHub')
 
-admin.site.register(models.LeagueUser, UserAdmin)
+
+admin.site.register(CustomUser, UserAdmin)

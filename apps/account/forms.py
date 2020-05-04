@@ -36,12 +36,12 @@ class AuthenticationForm(auth_forms.AuthenticationForm):
 class UserCreationForm(auth_forms.UserCreationForm):
     # A form for creating new users. It includes an additional field not used by default (email).
     class Meta:
-        fields = ('username', 'email')
         model = models.LeagueUser
+        fields = ('username', 'email')
 
 
 class UserChangeForm(auth_forms.UserChangeForm):
     # A form for updating new users.
     class Meta:
-        fields = ('username',)
         model = models.LeagueUser
+        fields = ('username',)
