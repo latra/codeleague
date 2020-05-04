@@ -15,6 +15,7 @@ class Category(models.Model):
 class Competition(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
+    owner = models.ForeignKey(LeagueUser, on_delete=models.CASCADE, null=True)
     data_start_inscription = models.DateTimeField(auto_now_add=True)#null=False)
     data_finish_inscription = models.DateTimeField()#null=False)
     data_start_competition = models.DateTimeField()#null=False)
@@ -28,7 +29,7 @@ class Competition(models.Model):
 class Team(models.Model):
     name = models.CharField(max_length=25, unique=True)
     ranking = models.ForeignKey('Ranking', on_delete=models.CASCADE, null=True)
-    members = models.ManyToManyField(LeagueUser, related_name='participants', null=True)
+    members = models.ManyToManyField(LeagueUser, related_name='participants')
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):

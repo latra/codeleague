@@ -19,8 +19,9 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
         # return reverse_lazy('competition:detail', kwargs={'pk': self.request.user.pk})
 
     def form_valid(self, form):
-        product = form.save(commit=False)
-        product.save()
+        competition = form.save(commit=False)
+        competition.owner = self.request.user
+        competition.save()
         return http.HttpResponseRedirect(self.get_success_url())
 
 
@@ -61,7 +62,7 @@ class CreateTeam(LoginRequiredMixin, generic.CreateView):
         return super().get_context_data(**context)
 
     def get_success_url(self):
-        return reverse_lazy('competition:detail', kwargs={'pk': 1})
+        return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
 
     def form_valid(self, form):
         team = form.save(commit=False)
@@ -81,5 +82,4 @@ class Categories(LoginRequiredMixin, generic.ListView):
         context['competitions'] = {}
         for category in context['object_list']:
             context['competitions'][category.id] = Competition.objects.filter(categories__name__contains=category.name)
-        print(context)
         return context
