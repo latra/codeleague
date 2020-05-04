@@ -5,8 +5,8 @@ from apps.account import forms, views
 
 app_name='account'
 urlpatterns = [
-    path('login/', LoginView.as_view(authentication_form=forms.AuthenticationForm), name='login'),
-    path('signup/', views.SignUp.as_view(), name='sign-up'),
+    path('login/', views.Login.as_view(), name='login'),
+    path('signup/', views.SignUp.as_view(), name='signup'),
     path('', include('django.contrib.auth.urls')),
     path('u/<int:pk>/', views.UserDetail.as_view(), name='user_detail'),
 ]

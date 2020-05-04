@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Compete!</h5>
                             <p class="card-text">Find a competition and enjoy programming! That's what you have registered, didn't you?</p>
-                            <a href="{% url 'home' %}" class="btn btn-primary float-right">Let's hack</a>
+                            <a href="{% url 'league:home' %}" class="btn btn-primary float-right">Let's hack</a>
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Update your profile!</h5>
                             <p class="card-text">A cool profile means a cool hacker. Let's update your profile.</p>
-                            <a href="{% url 'home' %}" class="btn btn-primary float-right">My profile</a>
+                            <a href="{% url 'league:home' %}" class="btn btn-primary float-right">My profile</a>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Create a competition!</h5>
                             <p class="card-text">If you find a competition that would be enjoyable? Create one!</p>
-                            <a href="{% url 'apps.competition:create-competition' %}" class="btn btn-primary float-right">Creator</a>
+                            <a href="{% url 'competition:create-competition' %}" class="btn btn-primary float-right">Creator</a>
                         </div>
                     </div>
                 </div>
