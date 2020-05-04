@@ -32,7 +32,7 @@ class Team(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f'Team {self.name} in {self.competition} : {self.members}'
+        return f'Team {self.name} in {self.competition} : {self.members.all()}'
 
 
 class Ranking(models.Model):

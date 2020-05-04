@@ -60,13 +60,12 @@ class CreateTeam(LoginRequiredMixin, generic.CreateView):
         return super().get_context_data(**context)
 
     def get_success_url(self):
-        return reverse_lazy('league:home')
-        # return reverse_lazy('competition:detail', kwargs={'pk': self.request.user.pk})
+        return reverse_lazy('competition:detail', kwargs={'pk': 1})
 
     def form_valid(self, form):
         team = form.save(commit=False)
-        print(team.name)
-        users = LeagueUser.objects.filter(pk=self.request.user.pk)
-        team.members.add(*users)
-        team.competition = Competition.objects.get(id=self.kwargs['pk'])
-        return super(CreateTeam, self).form_valid(form)
+        team.competition = Competition.objects.get(pk=self.kwargs['pk'])
+        team.save()
+        team.members.add(self.request.user.pk)
+        team.save()
+        return http.HttpResponseRedirect(self.get_success_url())
