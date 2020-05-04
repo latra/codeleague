@@ -6,7 +6,6 @@ from apps.league.models import Competition
 
 
 class CompetitionAdmin(admin.ModelAdmin):
-    add_form_template = forms.CompetitionCreationForm
-
+    pass
 
 admin.site.register(Competition, CompetitionAdmin)
