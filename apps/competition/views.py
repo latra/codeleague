@@ -8,6 +8,7 @@ from django.views import generic
 from apps.account.models import LeagueUser
 from apps.competition.forms import CompetitionCreationForm, TeamCreationForm
 from apps.league.models import Competition
+from apps.league.models import Team
 
 
 class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
@@ -45,6 +46,8 @@ class JoinTeam(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = {}
+        context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
+        context.update(kwargs)
         return super().get_context_data(**context)
 
 
