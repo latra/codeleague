@@ -25,15 +25,20 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
+                        {% if compet.owner == user %}
+                            <a href="{% url 'competition:edit' compet.pk %}"
+                               class="btn btn-outline-primary float-right">
+                                <img width="20px"
+                                     src="{% static 'imgs/icons/edit.png' %}">Edit
+                            </a>
+                        {% endif %}
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-12">
                                 <h4 class="card-title">{{ compet.title }}</h4>
                             </div>
-                            <div class="col-2">
-                                {% if compet.owner == user %} <button class="btn"><img  width="40%" src="{% static 'imgs/icons/edit.png' %}">Edit </button>
-                                {% endif %}
-                            </div>
+
                         </div>
+
                         <p class="card-text">
                             {{ compet.description|slice:"0:200" }}...
                         </p>

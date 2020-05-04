@@ -1,12 +1,29 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import DetailView
+from django.views.generic import DetailView, UpdateView
 
 from apps.account.forms import UserCreationForm, AuthenticationForm
 from apps.account.models import LeagueUser
+
+
+class UpdateProfile(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = LeagueUser
+    fields = ['username', 'GitHub']
+    template_name = 'update_profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        return super().get_context_data(**context)
+
+    def test_func(self):
+        user = LeagueUser.objects.get(pk=self.kwargs['pk'])
+        return user.pk == self.request.user.pk
+
+    def get_success_url(self):
+        return reverse_lazy('league:home')
 
 
 class SignUp(generic.CreateView):
@@ -21,7 +38,7 @@ class SignUp(generic.CreateView):
 
 class UserDetail(LoginRequiredMixin, DetailView):
     template_name = "account.html"
-    context_object_name = 'user'
+    context_object_name = 'detailuser'
     model = LeagueUser
 
     def get_context_data(self, **kwargs):
@@ -33,4 +50,3 @@ class Login(LoginView):
     authentication_form = AuthenticationForm
     success_url = reverse_lazy('account:login')
     redirect_field_name = 'redirect_to'
-
