@@ -28,7 +28,7 @@ class Competition(models.Model):
 class Team(models.Model):
     name = models.CharField(max_length=25, unique=True)
     ranking = models.ForeignKey('Ranking', on_delete=models.CASCADE, null=True)
-    members = models.ManyToManyField(LeagueUser, related_name='participants')
+    members = models.ManyToManyField(LeagueUser, related_name='participants', null=True)
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):

@@ -3,13 +3,14 @@
 {% block title %}Your account{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-  {% if user.is_authenticated %}
-  <h1>Hey, it's {{ user.username }}</h1>
-  <p>You can see your account details here</p>
-  {% else %}
-  <p>You are not logged in. Log in to see your profile</p>
-  {% endif %}
-</div>
-
+    <div class="container p-6">
+        <div class="jumbotron p">
+            {% if user.is_authenticated %}
+                <h1>Hey, it's {{ user.username }}</h1>
+                <p>You can see your account details here</p>
+            {% else %}
+                <p>You are not logged in. Log in to see your profile</p>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

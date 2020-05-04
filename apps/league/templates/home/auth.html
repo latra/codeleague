@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <p class="card-text">
-                            {{ compet.description|slice:"0:15" }}...
+                            {{ compet.description|slice:"0:200" }}...
                         </p>
                         <a href="#" class="btn btn-primary float-right" data-toggle="modal"
                            data-target="#modal{{ compet.id }}">+ info</a>
@@ -50,12 +50,13 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                                <div class="col-xs-12 float-right">
-                                    <a href='{% url 'competition:detail' compet.id %}'type="button" class="btn btn-outline-primary">Go to competition page</a>
-                                </div>
-                                <div class="col-xs-12">
-                                    {{ compet.description|slice:"0:30" }}...
-                                </div>
+                            <div class="col-xs-12 float-right">
+                                <a href='{% url 'competition:detail' compet.id %}' type="button"
+                                   class="btn btn-outline-primary">Go to competition page</a>
+                            </div>
+                            <div class="col-xs-12">
+                                {{ compet.description|slice:"0:240" }}...
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

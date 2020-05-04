@@ -32,3 +32,5 @@ class UserDetail(LoginRequiredMixin, DetailView):
 class Login(LoginView):
     authentication_form = AuthenticationForm
     success_url = reverse_lazy('account:login')
+    redirect_field_name = 'redirect_to'
+

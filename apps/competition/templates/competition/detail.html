@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
     <div class="jumbotron">
 
         <div class="container">
+            <a href="#" class="btn btn-primary float-right btn-lg" data-toggle="modal"
+                    data-target="#modal{{ competition.id }}">Join!
+            </a>
             <h1>{{ competition.title }}</h1>
             <p>{{ competition.description }}</p>
+            {% include "competition/detail/modal.html" %}
         </div>
     </div>
 {% endblock %}

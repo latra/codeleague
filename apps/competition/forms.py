@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.forms import SplitDateTimeWidget
 from django.contrib.admin import widgets
-from apps.league.models import Competition
+from apps.league.models import Competition, Team
 from django import forms
 
 
@@ -20,3 +20,9 @@ class CompetitionCreationForm(forms.ModelForm):
             'data_start_competition': forms.SelectDateWidget(),
             'data_finish_competition': forms.SelectDateWidget(),
         }
+
+
+class TeamCreationForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = ['name']
