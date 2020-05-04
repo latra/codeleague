@@ -10,14 +10,16 @@ from apps.league.models import Competition
 
 
 class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
-    login_url = '/accounts/login/'
-    redirect_field_name = 'redirect_to'
+    login_url = reverse_lazy('account:login')
     form_class = CompetitionCreationForm
     template_name = 'competition/create.html'
 
+    def get_success_url(self):
+        return reverse_lazy('league:home')
+        #return reverse_lazy('competition:detail', kwargs={'pk': self.request.user.pk})
+
     def form_valid(self, form):
         product = form.save(commit=False)
-        product.creator = self.request.user
         product.save()
         return http.HttpResponseRedirect(self.get_success_url())
 
