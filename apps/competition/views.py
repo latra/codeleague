@@ -5,10 +5,8 @@ from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views import generic
 
-from apps.account.models import LeagueUser
 from apps.competition.forms import CompetitionCreationForm, TeamCreationForm
-from apps.league.models import Competition
-from apps.league.models import Team
+from apps.league.models import Team, Competition, Category
 
 
 class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
@@ -72,3 +70,12 @@ class CreateTeam(LoginRequiredMixin, generic.CreateView):
         team.members.add(self.request.user.pk)
         team.save()
         return http.HttpResponseRedirect(self.get_success_url())
+
+
+class Categories(LoginRequiredMixin, generic.ListView):
+    model = Category
+    template_name = 'categories/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
