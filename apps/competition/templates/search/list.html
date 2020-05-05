@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Sign Up{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="jumbotron">
+        <div class="container px-5">
+            <h2>Searching for: {{ query }}</h2>
+        </div>
+        {% include "home/competlist.html" %}
+
+    </div>
+{% endblock %}

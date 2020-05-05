@@ -1,0 +1,75 @@
+{% load static %}
+<div class="container">
+
+    <div class="row pb-3">
+        {% for compet in competitions %}
+            <div class="col-6 pb-3">
+                <div class="card">
+                    <div class="card-body">
+                        {% if compet.owner == user %}
+                            <a href="{% url 'competition:edit' compet.pk %}"
+                               class="btn btn-outline-primary float-right">
+                                <img width="20px"
+                                     src="{% static 'imgs/icons/edit.png' %}">Edit
+                            </a>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="card-title">{{ compet.title }}{% if compet.is_competition_opened %}
+                                    <span class="badge badge-success">Opened</span> {% else %}
+                                    <span class="badge badge-danger">Closed</span> {% endif %}</h4>
+                            </div>
+
+                        </div>
+                        {% if compet.is_inscription_opened %}
+                            <span class="badge badge-success">Inscriptions opened</span> {% else %}
+                            <span class="badge badge-danger">Inscriptions closed</span> {% endif %}
+
+                        <p class="card-text pt-3">
+                            {{ compet.description|slice:"0:200" }}...
+                        </p>
+
+                        <a href="#" class="btn btn-primary float-right" data-toggle="modal"
+                           data-target="#modal{{ compet.id }}">+ info</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal competition -->
+            <div class="modal fade pt-5" id="modal{{ compet.id }}" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog " role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                {{ compet.title }}{% if compet.is_competition_opened %}
+                                    <span class="badge badge-success">Opened</span> {% else %}
+                                    <span class="badge badge-danger">Closed</span> {% endif %}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-xs-12 float-right">
+                                <a href='{% url 'competition:detail' compet.id %}' type="button"
+                                   class="btn btn-outline-primary">Go to competition page</a>
+                            </div>
+                            <div class="col-xs-12">
+
+                                {% if compet.is_inscription_opened %}
+                                    <span class="badge badge-success">Inscriptions opened</span> {% else %}
+                                    <span class="badge badge-danger">Inscriptions closed</span> {% endif %}
+                                <div class="row">
+                                    {{ compet.description|slice:"0:240" }}...
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
