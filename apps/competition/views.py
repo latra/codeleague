@@ -5,7 +5,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import UpdateView
 from django.views import generic
 
-from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm
+from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm, TeamLeaveForm
 from apps.league.models import Team, Competition, Category
 
 
@@ -55,6 +55,11 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         context = {}
         context['user'] = self.request.user
         context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
+        context['haveTeam'] = False
+        for group in context['groups']:
+            if context['user'] in group.members.all():
+                context['haveTeam'] = True
+            
         context.update(kwargs)
         return super().get_context_data(**context)
 
@@ -89,4 +94,36 @@ class CreateTeam(LoginRequiredMixin, generic.CreateView):
         team.save()
         return http.HttpResponseRedirect(self.get_success_url())
 
+class LeaveTeam(LoginRequiredMixin, generic.CreateView):
+    login_url = reverse_lazy('account:login')
+    template_name = 'team/confirm_leave_group.html'
+    success_url = reverse_lazy('competition:leave-team')
+    queryset = Competition.objects.all()
+    form_class = TeamLeaveForm
 
+    def get_context_data(self, **kwargs):
+        context = {}
+        return super().get_context_data(**context)
+
+    def get_success_url(self):
+        return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
+    def get_object(self):
+        print(self.kwargs)
+        obj = Team.objects.filter(id=self.kwargs['cpk'])[0]
+        return(obj)
+    def form_valid(self, form):
+        #
+        team = self.get_object()
+        team.members.remove(self.request.user.pk)
+        return http.HttpResponseRedirect(self.get_success_url())
+
+class Categories(LoginRequiredMixin, generic.ListView):
+    model = Category
+    template_name = 'categories/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['competitions'] = {}
+        for category in context['object_list']:
+            context['competitions'][category.id] = Competition.objects.filter(categories=category)
+        return context

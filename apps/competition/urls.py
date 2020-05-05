@@ -8,4 +8,5 @@ urlpatterns = [
     path('id/<int:pk>/', views.CompetitionDetail.as_view(), name='detail'),
     path('id/<int:pk>/edit/', views.CompetitionUpdate.as_view(), name='edit'),
     path('id/<int:pk>/create-team/', views.CreateTeam.as_view(), name='create-team'),
+    path('id/<int:pk>/leave-team/<int:cpk>', views.LeaveTeam.as_view(), name='leave-team'),
 ]

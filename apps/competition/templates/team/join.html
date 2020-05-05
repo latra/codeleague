@@ -8,16 +8,28 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12">
-                                    <h4 class="card-title">{{ group.name }}</h4>
+                                <div class="col-12">                            
+                                    <h4 class="card-title">
+                                    {% if user in group.members.all %}
+                                        [My team]
+                                    {% endif %}
+                                    {{ group.name }}</h4>
                                     <h6>{{ group.members.all|length }}/4 members</h6> 
  
                                 </div>
-                            </div> 
+                            </div>
+                            {% if haveTeam == False %}
                             <form method="POST">{% csrf_token%}
                                 <input type="hidden" id="name" value={{group.id}} name="name">
-                                <p><input type="submit" value="unirse al grupo"/></p>
+                                <p><input type="submit" value="Join team"/></p>
                             </form>
+                            {% endif %}
+                            {% if user in group.members.all %}
+                            <form method="POST">{% csrf_token%}
+                                <a href='{% url 'competition:leave-team' competition.id group.id %}' type="button"
+                                class="btn btn-outline-primary">Leave Group</a>
+                            </form>        
+                            {% endif %}
                         </div>               
                     </div>
                 </div>

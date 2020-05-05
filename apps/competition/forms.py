@@ -50,3 +50,7 @@ class TeamJoinForm(forms.ModelForm):
         model = Team
         fields = ['name']
         
+class TeamLeaveForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = []
