@@ -61,12 +61,12 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         for group in context['groups']:
             if context['user'] in group.members.all():
                 context['haveTeam'] = True
-            
+
         context.update(kwargs)
         return super().get_context_data(**context)
 
     def form_valid(self, form):
-        competition = Competition.objects.filter(id = self.kwargs['pk'])[0]
+        competition = Competition.objects.filter(id=self.kwargs['pk'])[0]
         action = self.request.POST.get('action')
         if competition.is_inscription_opened():
             team = Team.objects.filter(id=self.request.POST.get('teamId'))[0]
@@ -79,12 +79,13 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
                 if len(team.members.all()) == 0:
                     team.delete()
             return http.HttpResponseRedirect(self.get_success_url())
-        return HttpResponseForbidden()
+        return http.HttpResponseForbidden()
+
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
 
 
-class CreateTeam(LoginRequiredMixin,UserPassesTestMixin, generic.CreateView):
+class CreateTeam(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     login_url = reverse_lazy('account:login')
     template_name = 'team/create.html'
     success_url = reverse_lazy('competition:create-team')
@@ -98,15 +99,17 @@ class CreateTeam(LoginRequiredMixin,UserPassesTestMixin, generic.CreateView):
 
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
+
     def test_func(self):
         competition = Competition.objects.filter(id=self.kwargs.get(self.pk_url_kwarg))[0]
         if competition.owner == self.request.user:
             return False
-        teams = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))        
+        teams = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
         for team in teams:
             if self.request.user in team.members.all():
                 return False
         return True
+
     def form_valid(self, form):
         team = form.save(commit=False)
         team.competition = Competition.objects.get(pk=self.kwargs['pk'])
@@ -114,6 +117,7 @@ class CreateTeam(LoginRequiredMixin,UserPassesTestMixin, generic.CreateView):
         team.members.add(self.request.user.pk)
         team.save()
         return http.HttpResponseRedirect(self.get_success_url())
+
 
 class SearchCompetitions(LoginRequiredMixin, generic.TemplateView):
     context_object_name = 'context'
@@ -125,4 +129,3 @@ class SearchCompetitions(LoginRequiredMixin, generic.TemplateView):
             Competition.objects.filter(description__contains=query))
         context = {'query': query, 'competitions': competitions}
         return context
-
