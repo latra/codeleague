@@ -76,7 +76,7 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
 
 
-class CreateTeam(LoginRequiredMixin, generic.CreateView):
+class CreateTeam(LoginRequiredMixin,UserPassesTestMixin, generic.CreateView):
     login_url = reverse_lazy('account:login')
     template_name = 'team/create.html'
     success_url = reverse_lazy('competition:create-team')
@@ -89,7 +89,15 @@ class CreateTeam(LoginRequiredMixin, generic.CreateView):
 
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
-
+    def test_func(self):
+        competition = Competition.objects.filter(id=self.kwargs.get(self.pk_url_kwarg))[0]
+        if competition.owner == self.request.user:
+            return False
+        teams = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))        
+        for team in teams:
+            if self.request.user in team.members.all():
+                return False
+        return True
     def form_valid(self, form):
         team = form.save(commit=False)
         team.competition = Competition.objects.get(pk=self.kwargs['pk'])
@@ -98,7 +106,7 @@ class CreateTeam(LoginRequiredMixin, generic.CreateView):
         team.save()
         return http.HttpResponseRedirect(self.get_success_url())
 
-class LeaveTeam(LoginRequiredMixin, generic.CreateView):
+class LeaveTeam(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     login_url = reverse_lazy('account:login')
     template_name = 'team/confirm_leave_group.html'
     success_url = reverse_lazy('competition:leave-team')
@@ -108,7 +116,8 @@ class LeaveTeam(LoginRequiredMixin, generic.CreateView):
     def get_context_data(self, **kwargs):
         context = {}
         return super().get_context_data(**context)
-
+    def test_func(self):
+        return self.request.user in self.get_object().members.all()
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
     def get_object(self):

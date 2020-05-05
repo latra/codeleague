@@ -6,7 +6,7 @@
     <div class="jumbotron">
 
         <div class="container">
-            {% if competition.owner != user and competition.is_inscription_opened %}
+            {% if competition.owner != user and competition.is_inscription_opened and haveTeam == False%}
             <a href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!
             </a>
             {% else %}
