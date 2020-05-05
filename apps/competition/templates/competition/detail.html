@@ -7,8 +7,6 @@
 
         <div class="container">
             {% if competition.owner != user %}
-            <a href="#" class="btn btn-primary float-right btn-lg" data-toggle="modal"
-               data-target="#modal{{ competition.id }}">Join!</a>
             <a href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!
             </a>
             {% else %}
