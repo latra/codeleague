@@ -6,11 +6,11 @@
     <div class="container px-12">
         <div class="jumbotron">
             <div class="text-center">
-                <h1>List of categories</h1>
+                <h2>Searching for {{ query }}</h2>
             </div>
             <br>
             <div class="container px-5 pb-3">
-            <form class=" col-xs-12" action="{% url 'competition:search' %}"
+            <form class=" col-xs-12" action="{% url 'category:search' %}"
                   method="get">
                 <input name="q" class="form-control col-xs-12" type="text" placeholder="Search categories"
                        aria-label="Search">
@@ -18,7 +18,7 @@
                 </div>
 
             <div class="row">
-                {% include "categories/list.html" %}
+                {% include "categories/cat_list.html" %}
             </div>
 
         </div>
