@@ -14,8 +14,10 @@
  
                                 </div>
                             </div> 
-                            <a href='{% url 'competition:join-team' competition.id group.id %}' type="button"
-                            class="btn btn-outline-primary">Join group</a>
+                            <form method="POST">{% csrf_token%}
+                                <input type="hidden" id="name" value={{group.id}} name="name">
+                                <p><input type="submit" value="unirse al grupo"/></p>
+                            </form>
                         </div>               
                     </div>
                 </div>
