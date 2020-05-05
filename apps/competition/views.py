@@ -1,8 +1,8 @@
 from django import http
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
-from django.utils.decorators import method_decorator
+from django.views.generic.edit import UpdateView
 from django.views import generic
 
 from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm
@@ -24,8 +24,24 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
         competition.save()
         return http.HttpResponseRedirect(self.get_success_url())
 
+class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Competition
+    fields = ['title', 'description']
+    template_name = 'competition/competition_update_form.html'
 
-class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateView):
+    def get_context_data(self, **kwargs):
+        context = {}
+        return super().get_context_data(**context)
+
+    def test_func(self):
+        competition = Competition.objects.get(pk=self.kwargs['pk'])
+        return competition.owner.pk == self.request.user.pk
+
+    def get_success_url(self):
+        return reverse_lazy('league:home')
+
+
+class CompetitionDetail(LoginRequiredMixin, generic.DetailView):
     login_url = reverse_lazy('account:login')
     redirect_field_name = 'redirect_to'
     context_object_name = 'competition'

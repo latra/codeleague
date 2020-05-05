@@ -6,8 +6,20 @@
     <div class="jumbotron">
 
         <div class="container">
+            {% if competition.owner != user %}
+            <a href="#" class="btn btn-primary float-right btn-lg" data-toggle="modal"
+               data-target="#modal{{ competition.id }}">Join!</a>
             <a href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!
             </a>
+            {% else %}
+                <div class="float-right pr-3">
+                <a href="{% url 'competition:edit' competition.pk %}"
+                   class="btn btn-outline-primary float-right btn-lg">
+                    <img width="20px"
+                         src="{% static 'imgs/icons/edit.png' %}">Edit
+                </a>
+                </div>
+            {% endif %}
             <h1>{{ competition.title }}</h1>
             <p>{{ competition.description }}</p>
             {% include "team/join.html" %}
