@@ -66,10 +66,16 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         return super().get_context_data(**context)
 
     def form_valid(self, form):
-        team = Team.objects.filter(id=form.cleaned_data['name'])[0]
-        team.save()
-        team.members.add(self.request.user.pk)
-        team.save()
+        action = self.request.POST.get('action')
+        team = Team.objects.filter(id=self.request.POST.get('teamId'))[0]
+        if action == 'join':
+            team.members.add(self.request.user.pk)
+            team.save()
+        elif action == 'leave':
+            team.members.remove(self.request.user.pk)
+            team.save()
+            if len(team.members.all()) == 0:
+                team.delete()
         return http.HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
@@ -85,6 +91,7 @@ class CreateTeam(LoginRequiredMixin,UserPassesTestMixin, generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = {}
+
         return super().get_context_data(**context)
 
     def get_success_url(self):
@@ -115,6 +122,9 @@ class LeaveTeam(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = {}
+        context['competition'] = Competition.objects.filter(id=self.kwargs.get(self.pk_url_kwarg))[0]
+        context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
+
         return super().get_context_data(**context)
     def test_func(self):
         return self.request.user in self.get_object().members.all()
@@ -124,7 +134,6 @@ class LeaveTeam(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
         obj = Team.objects.filter(id=self.kwargs['cpk'])[0]
         return(obj)
     def form_valid(self, form):
-        #
         team = self.get_object()
         team.members.remove(self.request.user.pk)
         return http.HttpResponseRedirect(self.get_success_url())

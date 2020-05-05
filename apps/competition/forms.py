@@ -48,7 +48,7 @@ class TeamCreationForm(forms.ModelForm):
 class TeamJoinForm(forms.ModelForm):
     class Meta:
         model = Team
-        fields = ['name']
+        fields = []
         
 class TeamLeaveForm(forms.ModelForm):
     class Meta:
