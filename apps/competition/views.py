@@ -5,7 +5,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views import generic
 
-from apps.competition.forms import CompetitionCreationForm, TeamCreationForm
+from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm
 from apps.league.models import Team, Competition, Category
 
 
@@ -30,6 +30,8 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView):
     redirect_field_name = 'redirect_to'
     context_object_name = 'competition'
     template_name = 'competition/detail.html'
+    success_url = reverse_lazy('competition:create-team')
+
     queryset = Competition.objects.all()
 
     def get_context_data(self, **kwargs):
@@ -37,6 +39,31 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView):
         context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
         context.update(kwargs)
         return super().get_context_data(**context)
+
+
+class JoinTeam(LoginRequiredMixin, generic.CreateView):
+    login_url = reverse_lazy('account:login')
+    template_name = 'team/confirm_join.html'
+    form_class = TeamJoinForm
+    success_url = reverse_lazy('competition:join-team')
+    context_object_name = 'team'
+
+    queryset = Team.objects.all()
+    def get_context_data(self, **kwargs):
+        context = {}
+        return super().get_context_data(**context)
+    def get_object(self):
+        obj = super().get_object()
+        obj.save()
+        return obj
+    def form_valid(self, form):
+        team = self.get_object()
+        team.save()
+        team.members.add(self.request.user.pk)
+        team.save()
+        return http.HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self):
+        return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['cpk']})
 
 
 class CreateTeam(LoginRequiredMixin, generic.CreateView):

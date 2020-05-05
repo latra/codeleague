@@ -1,3 +1,5 @@
+{% load crispy_forms_filters %}
+
 {% block content %}
     <div class="container">
             {% for group in groups %}
@@ -9,12 +11,12 @@
                                 <div class="col-12">
                                     <h4 class="card-title">{{ group.name }}</h4>
                                     <h6>{{ group.members.all|length }}/4 members</h6> 
-
+ 
                                 </div>
-                            </div>
-                            <a href="#" class="btn btn-primary float-right" data-toggle="modal"
-                               data-target="#modal{{ group.id }}">Join!</a>
-                        </div>
+                            </div> 
+                            <a href='{% url 'competition:join-team' competition.id group.id %}' type="button"
+                            class="btn btn-outline-primary">Join group</a>
+                        </div>               
                     </div>
                 </div>
             </div>
