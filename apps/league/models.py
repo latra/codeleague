@@ -14,7 +14,19 @@ class Category(models.Model):
     def __str__(self):
         return f'Category {self.name}'
 
+class Files(models.Model):
 
+    title =  models.CharField(max_length=50)
+    file_field = models.FileField(upload_to="uploads/", blank=True)
+    
+    @classmethod
+    def create(cls, title, file_field):
+        file_upload = cls(title=title, file_field = file_field)
+        # do something with the book
+        return file_upload
+
+    def __str__(self):
+        return f'Title {self.title} file{self.file_field}'
 class Competition(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
@@ -24,7 +36,7 @@ class Competition(models.Model):
     data_start_competition = models.DateTimeField(default=datetime.timezone.datetime.now)
     data_finish_competition = models.DateTimeField(default=datetime.timezone.datetime.now)
     categories = models.ManyToManyField(Category, blank=True)
-
+    files = models.ManyToManyField(Files, blank=True)
     def __str__(self):
         return f'{self.title}'
 

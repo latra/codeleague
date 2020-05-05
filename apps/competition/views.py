@@ -3,11 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.views import generic
-
+from django.shortcuts import render
 from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm, TeamLeaveForm
-from apps.league.models import Team, Competition, Category
-from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm
-from apps.league.models import Team, Competition
+from apps.league.models import Team, Competition, Category, Files
 
 
 class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
@@ -22,7 +20,14 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         competition = form.save(commit=False)
         competition.owner = self.request.user
+        files = self.request.FILES.getlist('files')
         competition.save()
+        for file_name in files:
+            file_data = Files.create(str(file_name), file_name)
+            file_data.save()
+            competition.files.add(file_data)
+        competition.save()
+
         return http.HttpResponseRedirect(self.get_success_url())
 
 
