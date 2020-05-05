@@ -41,7 +41,7 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return reverse_lazy('league:home')
 
 
-class CompetitionDetail(LoginRequiredMixin, generic.DetailView):
+class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateView):
     login_url = reverse_lazy('account:login')
     redirect_field_name = 'redirect_to'
     context_object_name = 'competition'
@@ -57,10 +57,7 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView):
         context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
         context.update(kwargs)
         return super().get_context_data(**context)
-    def get_selected_team(self):
-        obj = super().get_object()
-        obj.save()
-        return obj
+
     def form_valid(self, form):
         team = Team.objects.filter(id=form.cleaned_data['name'])[0]
         team.save()
