@@ -3,10 +3,27 @@ from django.forms import SplitDateTimeWidget
 from django.contrib.admin import widgets
 from apps.league.models import Competition, Team
 from django import forms
+from django.forms.utils import to_current_timezone
 
 
-class DateTimeInput(forms.DateTimeInput):
-    input_type = 'datetime-local'
+class CustomSplitDateTimeWidget(forms.MultiWidget):
+    def decompress(self, value):
+        if value:
+            value = to_current_timezone(value)
+            return [value.date(), value.time()]
+        return [None, None]
+
+    def __init__(self, attrs=None, date_format=None, time_format=None, date_attrs=None, time_attrs=None):
+        widgets = (
+            forms.SelectDateWidget(
+                attrs=attrs if date_attrs is None else date_attrs,
+            ),
+            forms.TimeInput(
+                attrs=attrs if time_attrs is None else time_attrs,
+                format=time_format,
+            ),
+        )
+        super().__init__(widgets)
 
 
 class CompetitionCreationForm(forms.ModelForm):
