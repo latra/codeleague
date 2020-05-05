@@ -65,5 +65,4 @@ class UserParticipations(LoginRequiredMixin, generic.TemplateView):
         for team in context['teams']:
             context['competitions'].append(Competition.objects.get(pk=team.competition.pk))
         context.update(kwargs)
-        print(context)
         return context

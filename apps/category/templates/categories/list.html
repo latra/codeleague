@@ -1,0 +1,35 @@
+{% load tag_extras %}
+
+{% for category in categories %}
+    <div class="col-6 pb-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <a class="btn btn-primary float-right " data-toggle="collapse"
+                           href="#collapse{{ category.id }}" role="button" aria-expanded="false"
+                           aria-controls="collapse{{ category.id }}">
+                            See Competitions</a>
+                        <h4 class="card-title">{{ category.name }}</h4>
+
+                    </div>
+                </div>
+                <p class="card-text">
+                    {{ category.description|slice:"0:200" }}...
+                </p>
+                <div class="collapse multi-collapse" id="collapse{{ category.id }}">
+                    <div class="card card-body">
+                        <ul>
+                            {% with cid=category.id %}
+                                {% for k in competitions|hash:category.id %}
+                                    <li><a href="{% url 'competition:detail' k.id %}"
+                                           class="text-secondary"> {{ k }}</a></li>
+                                {% endfor %}
+                            {% endwith %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

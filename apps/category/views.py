@@ -8,6 +8,7 @@ from django.views import generic
 
 class ListCategories(LoginRequiredMixin, generic.ListView):
     model = Category
+    context_object_name = 'categories'
     template_name = 'list.html'
 
     def get_context_data(self, **kwargs):
