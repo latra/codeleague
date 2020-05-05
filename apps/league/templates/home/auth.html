@@ -20,9 +20,10 @@
     </div>
 </div>
 <div class="container">
-    {% for compet in competition_list %}
-        <div class="row pb-3">
-            <div class="col-12">
+
+    <div class="row pb-3">
+        {% for compet in competition_list %}
+            <div class="col-6 pb-3">
                 <div class="card">
                     <div class="card-body">
                         {% if compet.owner == user %}
@@ -59,7 +60,10 @@
                 <div class="modal-dialog " role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">{{ compet.title }}</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                {{ compet.title }}{% if compet.is_competition_opened %}
+                                    <span class="badge badge-success">Opened</span> {% else %}
+                                    <span class="badge badge-danger">Closed</span> {% endif %}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -70,7 +74,13 @@
                                    class="btn btn-outline-primary">Go to competition page</a>
                             </div>
                             <div class="col-xs-12">
-                                {{ compet.description|slice:"0:240" }}...
+
+                                {% if compet.is_inscription_opened %}
+                                    <span class="badge badge-success">Inscriptions opened</span> {% else %}
+                                    <span class="badge badge-danger">Inscriptions closed</span> {% endif %}
+                                <div class="row">
+                                    {{ compet.description|slice:"0:240" }}...
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -79,8 +89,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+
 
 </div>
 

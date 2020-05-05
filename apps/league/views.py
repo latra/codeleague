@@ -15,5 +15,3 @@ class Home(generic.ListView):
 
 class Info(generic.TemplateView):
     template_name = 'info.html'
-
-
