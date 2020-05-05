@@ -66,18 +66,20 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         return super().get_context_data(**context)
 
     def form_valid(self, form):
+        competition = Competition.objects.filter(id = self.kwargs['pk'])[0]
         action = self.request.POST.get('action')
-        team = Team.objects.filter(id=self.request.POST.get('teamId'))[0]
-        if action == 'join':
-            team.members.add(self.request.user.pk)
-            team.save()
-        elif action == 'leave':
-            team.members.remove(self.request.user.pk)
-            team.save()
-            if len(team.members.all()) == 0:
-                team.delete()
-        return http.HttpResponseRedirect(self.get_success_url())
-
+        if competition.is_inscription_opened():
+            team = Team.objects.filter(id=self.request.POST.get('teamId'))[0]
+            if action == 'join':
+                team.members.add(self.request.user.pk)
+                team.save()
+            elif action == 'leave':
+                team.members.remove(self.request.user.pk)
+                team.save()
+                if len(team.members.all()) == 0:
+                    team.delete()
+            return http.HttpResponseRedirect(self.get_success_url())
+        return HttpResponseForbidden()
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
 
