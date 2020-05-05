@@ -51,17 +51,6 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = {}
-        return super().get_context_data(**context)
-
-
-class JoinTeam(LoginRequiredMixin, generic.DetailView):
-    login_url = reverse_lazy('account:login')
-    template_name = 'team/join.html'
-    success_url = reverse_lazy('competition:join')
-    queryset = Competition.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = {}
         context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
         context.update(kwargs)
         return super().get_context_data(**context)

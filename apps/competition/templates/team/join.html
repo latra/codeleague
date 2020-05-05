@@ -1,15 +1,5 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}Sign Up{% endblock %}
-
 {% block content %}
-    <div class="jumbotron">
-
-        <div class="container">
-            <h1>{{ competition.title }}</h1>
-        </div>
-
-        <div class="container">
+    <div class="container">
             {% for group in groups %}
             <div class="row pb-3">
                 <div class="col-12">
@@ -29,6 +19,5 @@
                 </div>
             </div>
             {% endfor %}
-        </div>
     </div>
 {% endblock %}
