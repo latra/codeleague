@@ -1,13 +1,12 @@
 from django import http
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
-from django.utils.decorators import method_decorator
+from django.views.generic.edit import UpdateView
 from django.views import generic
 
-from apps.account.models import LeagueUser
 from apps.competition.forms import CompetitionCreationForm, TeamCreationForm
-from apps.league.models import Competition, Category
+from apps.league.models import Team, Competition, Category
 
 
 class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
@@ -20,9 +19,27 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
         # return reverse_lazy('competition:detail', kwargs={'pk': self.request.user.pk})
 
     def form_valid(self, form):
-        product = form.save(commit=False)
-        product.save()
+        competition = form.save(commit=False)
+        competition.owner = self.request.user
+        competition.save()
         return http.HttpResponseRedirect(self.get_success_url())
+
+
+class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Competition
+    fields = ['title', 'description']
+    template_name = 'competition/competition_update_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        return super().get_context_data(**context)
+
+    def test_func(self):
+        competition = Competition.objects.get(pk=self.kwargs['pk'])
+        return competition.owner.pk == self.request.user.pk
+
+    def get_success_url(self):
+        return reverse_lazy('league:home')
 
 
 class CompetitionDetail(LoginRequiredMixin, generic.DetailView):
@@ -45,6 +62,8 @@ class JoinTeam(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = {}
+        context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
+        context.update(kwargs)
         return super().get_context_data(**context)
 
 
@@ -60,16 +79,16 @@ class CreateTeam(LoginRequiredMixin, generic.CreateView):
         return super().get_context_data(**context)
 
     def get_success_url(self):
-        return reverse_lazy('league:home')
-        # return reverse_lazy('competition:detail', kwargs={'pk': self.request.user.pk})
+        return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
 
     def form_valid(self, form):
         team = form.save(commit=False)
-        print(team.name)
-        users = LeagueUser.objects.filter(pk=self.request.user.pk)
-        team.members.add(*users)
-        team.competition = Competition.objects.get(id=self.kwargs['pk'])
-        return super(CreateTeam, self).form_valid(form)
+        team.competition = Competition.objects.get(pk=self.kwargs['pk'])
+        team.save()
+        team.members.add(self.request.user.pk)
+        team.save()
+        return http.HttpResponseRedirect(self.get_success_url())
+
 
 class Categories(LoginRequiredMixin, generic.ListView):
     model = Category
@@ -77,4 +96,7 @@ class Categories(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['competitions'] = {}
+        for category in context['object_list']:
+            context['competitions'][category.id] = Competition.objects.filter(categories__name__contains=category.name)
         return context

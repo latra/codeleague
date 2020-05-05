@@ -10,6 +10,11 @@
                 <a class="nav-link" href="{% url 'account:user_detail' user.pk %}">My Profile</a>
             </li>
             <li class="nav-item px-3">
+            <a class="nav-link" href="{% url 'competition:listofcategories' %}">
+                Categories
+            </a>
+        </li>
+            <li class="nav-item px-3">
                 <a class="btn btn-outline-secondary" href="{% url 'account:logout' %}">Logout</a>
             </li>
         {% else %}

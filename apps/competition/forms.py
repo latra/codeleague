@@ -13,7 +13,7 @@ class CompetitionCreationForm(forms.ModelForm):
     class Meta:
         model = Competition
         fields = '__all__'
-        exclude = ['categories']
+        exclude = ['categories', 'owner']
         widgets = {
             'data_start_inscription': forms.SelectDateWidget(),
             'data_finish_inscription': forms.SelectDateWidget(),

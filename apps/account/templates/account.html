@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Your account{% endblock %}
 
 {% block content %}
     <div class="container p-6">
         <div class="jumbotron p">
             {% if user.is_authenticated %}
-                <h1>Hey, it's {{ user.username }}</h1>
+                {% if user == detailuser %}
+                    <a href="{% url 'account:edit' user.pk %}"
+                       class="btn btn-outline-primary float-right">
+                        <img width="20px"
+                             src="{% static 'imgs/icons/edit.png' %}">Edit
+                    </a>
+                {% endif %}
+                <h1>Hey, it's {{ detailuser.username }}</h1>
                 <p>You can see your account details here</p>
             {% else %}
                 <p>You are not logged in. Log in to see your profile</p>
