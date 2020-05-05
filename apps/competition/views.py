@@ -90,13 +90,3 @@ class CreateTeam(LoginRequiredMixin, generic.CreateView):
         return http.HttpResponseRedirect(self.get_success_url())
 
 
-class Categories(LoginRequiredMixin, generic.ListView):
-    model = Category
-    template_name = 'categories/list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['competitions'] = {}
-        for category in context['object_list']:
-            context['competitions'][category.id] = Competition.objects.filter(categories=category)
-        return context
