@@ -113,32 +113,6 @@ class CreateTeam(LoginRequiredMixin,UserPassesTestMixin, generic.CreateView):
         team.save()
         return http.HttpResponseRedirect(self.get_success_url())
 
-class LeaveTeam(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
-    login_url = reverse_lazy('account:login')
-    template_name = 'team/confirm_leave_group.html'
-    success_url = reverse_lazy('competition:leave-team')
-    queryset = Competition.objects.all()
-    form_class = TeamLeaveForm
-
-    def get_context_data(self, **kwargs):
-        context = {}
-        context['competition'] = Competition.objects.filter(id=self.kwargs.get(self.pk_url_kwarg))[0]
-        context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
-
-        return super().get_context_data(**context)
-    def test_func(self):
-        return self.request.user in self.get_object().members.all()
-    def get_success_url(self):
-        return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
-    def get_object(self):
-        obj = Team.objects.filter(id=self.kwargs['cpk'])[0]
-        return(obj)
-    def form_valid(self, form):
-        team = self.get_object()
-        team.members.remove(self.request.user.pk)
-        return http.HttpResponseRedirect(self.get_success_url())
-
-
 class SearchCompetitions(LoginRequiredMixin, generic.TemplateView):
     context_object_name = 'context'
     template_name = 'search/list.html'
