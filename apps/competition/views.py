@@ -98,5 +98,5 @@ class Categories(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         context['competitions'] = {}
         for category in context['object_list']:
-            context['competitions'][category.id] = Competition.objects.filter(categories__name__contains=category.name)
+            context['competitions'][category.id] = Competition.objects.filter(categories=category)
         return context
