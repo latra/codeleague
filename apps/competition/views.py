@@ -1,12 +1,11 @@
 from django import http
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.views import generic
 
 from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm
-from apps.league.models import Team, Competition, Category
+from apps.league.models import Team, Competition
 
 
 class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
@@ -23,6 +22,7 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
         competition.owner = self.request.user
         competition.save()
         return http.HttpResponseRedirect(self.get_success_url())
+
 
 class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Competition
@@ -64,8 +64,10 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         team.members.add(self.request.user.pk)
         team.save()
         return http.HttpResponseRedirect(self.get_success_url())
+
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
+
 
 class CreateTeam(LoginRequiredMixin, generic.CreateView):
     login_url = reverse_lazy('account:login')
@@ -90,3 +92,14 @@ class CreateTeam(LoginRequiredMixin, generic.CreateView):
         return http.HttpResponseRedirect(self.get_success_url())
 
 
+class SearchCompetitions(LoginRequiredMixin, generic.TemplateView):
+    context_object_name = 'context'
+    template_name = 'search/list.html'
+
+    def get_context_data(self, **kwargs):
+        query = self.request.GET.get('q')
+        competitions = Competition.objects.filter(title__contains=query).union(
+            Competition.objects.filter(description__contains=query))
+        context = {'query': query, 'competitions': competitions}
+        return context
+        # return sorted(objs, key=get_key(latlon.get_lanlonkey(px)))
