@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}List of categories{% endblock %}
+
+{% block content %}
+    <div class="container px-12">
+        <div class="jumbotron">
+            <div class="text-center">
+                <h1>List of categories</h1>
+            </div>
+            <br>
+            <div class="container px-5 pb-3">
+            <form class=" col-xs-12" action="{% url 'category:search' %}"
+                  method="get">
+                <input name="q" class="form-control col-xs-12" type="text" placeholder="Search categories"
+                       aria-label="Search">
+            </form>
+                </div>
+
+            <div class="row">
+                {% include "categories/cat_list.html" %}
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

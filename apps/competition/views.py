@@ -140,5 +140,4 @@ class SearchCompetitions(LoginRequiredMixin, generic.TemplateView):
             Competition.objects.filter(description__contains=query))
         context = {'query': query, 'competitions': competitions}
         return context
-        # return sorted(objs, key=get_key(latlon.get_lanlonkey(px)))
 
