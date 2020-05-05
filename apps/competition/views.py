@@ -112,7 +112,6 @@ class LeaveTeam(LoginRequiredMixin, generic.CreateView):
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
     def get_object(self):
-        print(self.kwargs)
         obj = Team.objects.filter(id=self.kwargs['cpk'])[0]
         return(obj)
     def form_valid(self, form):
