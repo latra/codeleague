@@ -1,22 +1,21 @@
 {% load static %}
 <div class="container-fluid text-center">
     <img class="center-fit" width="40%" src="{% static 'imgs/CodeleagueTransp.png' %}" alt="Architecture">
-</div>
-<h1>Home</h1>
+</div><br><br>
 <div class="container text-center pb-2">
     <div class="row">
         <div class="col-3">
-            <a href="{% url 'competition:createcompetition' %}" class="btn btn-primary">Create a competition</a>
+            <a href="{% url 'competition:createcompetition' %}" class="btn btn-primary" style="background-color: #50ACE7; border-color: #50ACE7; color: #000">Create a competition</a>
         </div>
         <div class="col-3">
-            <button class="btn btn-primary">Profile</button>
+            <button class="btn btn-primary" style="background-color: #50ACE7; border-color: #50ACE7; color: #000">Profile</button>
         </div>
         <div class="col-3">
-            <button class="btn btn-primary">Profile</button>
+            <button class="btn btn-primary" style="background-color: #50ACE7; border-color: #50ACE7; color: #000">Profile</button>
         </div>
         <div class="col-3">
-            <button class="btn btn-primary">Profile</button>
+            <button class="btn btn-primary" style="background-color: #50ACE7; border-color: #50ACE7; color: #000">Profile</button>
         </div>
     </div>
-</div>
+</div><br><br>
 {% include "home/competlist.html" %}
