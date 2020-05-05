@@ -1,14 +1,47 @@
 <header>
-    <nav class="navbar navbar-default fixed-top navbar-light bg-light justify-content-between navbar-expand-lg " role="navigation">
-        <div class="container">
-        <a class="navbar-brand" href="/">Codeleague</a>
+    <nav class="navbar fixed-top navbar-light justify-content-between navbar-expand-lg " style="background-color: #B6EC83;" role="navigation">
+        <a class="navbar-brand pl-5" href="/">Codeleague</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            {% include "user_auth_state_bar.html" %}
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'league:info' %}">Info </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'account:user_detail' user.pk %}">View</a>
+                                <a class="dropdown-item" href="{% url 'account:edit' user.pk %}">Edit</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'category:listofcategories' %}">Categories</a>
+                        </li>
+                        <li class="nav-item px-3">
+                            <a class="btn btn-outline-secondary" href="{% url 'account:logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary" href="{% url 'account:signup' %}">Sign Up</a>
+                            <a class="btn btn-outline-secondary" href="{% url 'account:login' %}">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+                <ul class="navbar-nav ml-auto px-5">
+                    {% if user.is_authenticated %}
+                        <form class="form-inline" action="{% url 'competition:search' %}" method="get">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search competitions" aria-label="Search">
+                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    {% endif %}
+                </ul>
         </div>
-            </div>
     </nav>
 </header>
+
+
