@@ -10,4 +10,5 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('u/<int:pk>/edit/', views.UpdateProfile.as_view(), name='edit'),
     path('u/<int:pk>/', views.UserDetail.as_view(), name='user_detail'),
+    path('u/<int:pk>/participations/', views.UserParticipations.as_view(), name='participations'),
 ]

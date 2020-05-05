@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.views import generic
@@ -7,6 +8,7 @@ from django.views.generic import DetailView, UpdateView
 
 from apps.account.forms import UserCreationForm, AuthenticationForm
 from apps.account.models import LeagueUser
+from apps.league.models import Team, Competition
 
 
 class UpdateProfile(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -50,3 +52,18 @@ class Login(LoginView):
     authentication_form = AuthenticationForm
     success_url = reverse_lazy('account:login')
     redirect_field_name = 'redirect_to'
+
+
+class UserParticipations(LoginRequiredMixin, generic.TemplateView):
+    template_name = "participations/participate.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(UserParticipations, self).get_context_data(**kwargs)
+        context['teams'] = Team.objects.filter(members=self.kwargs.get('pk'))
+        context['competitions'] = []
+        context['duser'] = LeagueUser.objects.get(pk=self.kwargs.get('pk'))
+        for team in context['teams']:
+            context['competitions'].append(Competition.objects.get(pk=team.competition.pk))
+        context.update(kwargs)
+        print(context)
+        return context
