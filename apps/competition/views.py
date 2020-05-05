@@ -129,3 +129,19 @@ class SearchCompetitions(LoginRequiredMixin, generic.TemplateView):
             Competition.objects.filter(description__contains=query))
         context = {'query': query, 'competitions': competitions}
         return context
+
+
+class CompetitionFinish(LoginRequiredMixin, UserPassesTestMixin, generic.TemplateView):
+    login_url = reverse_lazy('account:login')
+    template_name = 'team/list.html'
+
+    def test_func(self):
+        competition = Competition.objects.get(pk=self.kwargs['pk'])
+        return competition.owner.pk == self.request.user.pk
+
+    def get_context_data(self, **kwargs):
+        context = {'user': self.request.user}
+        teams = Team.objects.filter(competition=self.kwargs.get('pk'))
+        context['teams'] = teams
+        context.update(kwargs)
+        return super().get_context_data(**context)
