@@ -39,7 +39,6 @@ class Competition(models.Model):
         return False
 
 
-
 class Team(models.Model):
     name = models.CharField(max_length=25, unique=True)
     ranking = models.ForeignKey('Ranking', on_delete=models.CASCADE, null=True)
