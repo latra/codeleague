@@ -280,4 +280,7 @@ pip-selfcheck.json
 
 static/
 
+#Evitar subir los uploads
+
+uploads/
 # End of https://www.gitignore.io/api/pycharm,python,venv,visualstudiocode,django
