@@ -26,8 +26,9 @@
                 <div class="col-2">
                     {% if haveTeam and competition.is_competition_opened %}
                     <div class="float-left container">
-                        <button type="button" class="btn btn-primary">Upload solution</button>
-                    </div>
+                    <a href='{% url "competition:submit-answer" competition.id %}' type="button"
+                                       class="btn btn-primary">Upload solution</a>
+                        </div>
                     {% endif %}
                 </div>
 

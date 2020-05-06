@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.views import generic
 from django.shortcuts import render
-from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm, TeamLeaveForm
+from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm, TeamLeaveForm, PublishAnswerForm
 from apps.league.models import Team, Competition, Category, Files
 import os, boto3, datetime
 
@@ -99,6 +99,7 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         for group in context['groups']:
             if context['user'] in group.members.all():
                 context['haveTeam'] = True
+                break
         context.update(kwargs)
         files = Competition.objects.filter(id=self.kwargs.get(self.pk_url_kwarg))[0].files.all()
         context['files'] = []
@@ -170,3 +171,42 @@ class SearchCompetitions(LoginRequiredMixin, generic.TemplateView):
             Competition.objects.filter(description__contains=query))
         context = {'query': query, 'competitions': competitions}
         return context
+
+
+class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+    login_url = reverse_lazy('account:login')
+    redirect_field_name = 'redirect_to'
+    context_object_name = 'competition'
+    template_name = 'competition/answermanager.html'
+    success_url = reverse_lazy('competition:publish-answer')
+    form_class = PublishAnswerForm
+
+    queryset = Competition.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        competition_groups = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
+        for group in competition_groups:
+            if self.request.user in group.members.all():
+                context['team'] = group
+                break
+        return super().get_context_data(**context)
+
+    def test_func(self):
+        competition = Competition.objects.get(id=self.kwargs['pk'])
+        competition_groups = Team.objects.filter(competition=competition)
+        have_group = False
+        for group in competition_groups:
+            if self.request.user in group.members.all():
+                have_group = True
+        return competition.is_competition_opened() and have_group
+
+    def form_valid(self, form):
+        competition = Competition.objects.filter(id=self.kwargs['pk'])[0]
+        if competition.is_competition_opened():
+            return http.HttpResponseRedirect(self.get_success_url())
+        return http.HttpResponseForbidden()
+
+    def get_success_url(self):
+        return reverse_lazy('competition:publish-answer', kwargs={'pk': self.kwargs['pk']})
+
