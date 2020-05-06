@@ -6,11 +6,12 @@ from django.views import generic
 from django.shortcuts import render
 from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm, TeamLeaveForm
 from apps.league.models import Team, Competition, Category, Files
-import boto3
-aws_access_key_id=""
-aws_secret_access_key=""
-s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+import os, boto3, datetime
+
+s3 = boto3.resource('s3', aws_access_key_id=str(os.getenv('AWS_KEY')), aws_secret_access_key=str(os.getenv('AWS_SECRET')))
+s3_client = boto3.client('s3', aws_access_key_id=str(os.getenv('AWS_KEY')), aws_secret_access_key=str(os.getenv('AWS_SECRET')))
+print(os.getenv('AWS_KEY'))
+print(os.getenv('AWS_SECRET'))
 
 class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
     login_url = reverse_lazy('account:login')
@@ -27,8 +28,9 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
         files = self.request.FILES.getlist('files')
         competition.save()
         for file_name in files:
-            s3.Bucket('codeleaguefiles').put_object(Key=str(competition.id) + str(file_name), Body=file_name)
-            file_data = Files.create(str(file_name), str(competition.id) + str(file_name))
+            datecreated = datetime.datetime.now()
+            s3.Bucket(os.getenv('AWS_BUCKET')).put_object(Key= str(datecreated) + str(competition.id) + str(file_name), Body=file_name)
+            file_data = Files.create(str(file_name),str(datecreated) + str(competition.id) + str(file_name))
             file_data.save()
             competition.files.add(file_data)
         competition.save()
@@ -63,12 +65,13 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             else:
                 update_file.title = self.request.POST.get('title'+str(update_file.id))
                 update_file.save()
-        if delete: s3.Bucket('codeleaguefiles').delete_objects(Delete={'Objects': res})
+        if delete: s3.Bucket(os.getenv('AWS_BUCKET')).delete_objects(Delete={'Objects': res})
         competition.save()
         files = self.request.FILES.getlist('files')
         for file_name in files:
-            s3.Bucket('codeleaguefiles').put_object(Key=str(competition.id) + str(file_name), Body=file_name)
-            file_data = Files.create(str(file_name), str(competition.id) + str(file_name))
+            datecreated = datetime.datetime.now()
+            s3.Bucket(os.getenv('AWS_BUCKET')).put_object(Key=str(datecreated) + str(competition.id) + str(file_name), Body=file_name)
+            file_data = Files.create(str(file_name),str(datecreated) + str(competition.id) + str(file_name))
             file_data.save()
             competition.files.add(file_data)
         competition.save()
@@ -100,7 +103,7 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         files = Competition.objects.filter(id=self.kwargs.get(self.pk_url_kwarg))[0].files.all()
         context['files'] = []
         for competition_file in files:
-            context['files'].append((competition_file.title, s3_client.generate_presigned_url('get_object', Params={'Bucket': 'codeleaguefiles', 'Key':competition_file.file_bucket}, ExpiresIn=100)))
+            context['files'].append((competition_file.title, s3_client.generate_presigned_url('get_object', Params={'Bucket': os.getenv('AWS_BUCKET'), 'Key':competition_file.file_bucket}, ExpiresIn=100)))
         return super().get_context_data(**context)
 
     def form_valid(self, form):
