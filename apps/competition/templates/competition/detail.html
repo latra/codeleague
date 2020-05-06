@@ -20,7 +20,27 @@
             {% endif %}
             <h1>{{ competition.title }}</h1>
             <p>{{ competition.description }}</p>
-            {% include "team/join.html" %}
+            <div class="row">
+                <div class="col-4">
+                    <ul class="list-unstyled">
+                        <h3 class="mt-0 mb-1">Files</h3>
+                        {% for file in competition.files.all %}
+
+                            <li class="media">
+                            <div style="margin:5px" class="container">
+                                <div class="media-body">
+                                <button type="button" class="btn btn-primary btn-sm">
+                                    <img width="20px" src="{% static 'imgs/icons/document.svg' %}" class="mr-3">{{file.title}}
+                                </button>
+                                </div>
+                            </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-8">{% include "team/join.html" %}</div>
+            </div>
+            
         </div>
     </div>
 {% endblock %}
