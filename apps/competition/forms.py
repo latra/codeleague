@@ -47,10 +47,15 @@ class TeamCreationForm(forms.ModelForm):
 
 
 class TeamJoinForm(forms.ModelForm):
+    action = forms.CharField(max_length=30, required=False)
     class Meta:
         model = Team
         fields = []
-        
+class DownloadFile(forms.ModelForm):
+    action = forms.CharField(max_length=30, required=False)
+    class Meta:
+        model = Competition
+        fields = []
 class TeamLeaveForm(forms.ModelForm):
     class Meta:
         model = Team

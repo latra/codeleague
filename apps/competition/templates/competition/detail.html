@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="jumbotron">
-
+        
         <div class="container">
             {% if competition.owner != user and competition.is_inscription_opened and haveTeam == False%}
             <a href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!
@@ -18,24 +18,37 @@
                 </a>
                 </div>
             {% endif %}
-            <h1>{{ competition.title }}</h1>
-            <p>{{ competition.description }}</p>
+            <div class="row">
+                <div class="col-10">
+                    <h1>{{ competition.title }}</h1>
+                    <p>{{ competition.description }}</p>
+                </div>
+                <div class="col-2">
+                    {% if haveTeam and competition.is_competition_opened %}
+                    <div class="float-left container">
+                        <button type="button" class="btn btn-primary">Upload solution</button>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
             <div class="row">
                 <div class="col-4">
                     <ul class="list-unstyled">
+                    {% if  competition.files.all|length > 0 %}
                         <h3 class="mt-0 mb-1">Files</h3>
-                        {% for file in competition.files.all %}
-
+                        {% for file in files %}
                             <li class="media">
                             <div style="margin:5px" class="container">
                                 <div class="media-body">
-                                <button type="button" class="btn btn-primary btn-sm">
-                                    <img width="20px" src="{% static 'imgs/icons/document.svg' %}" class="mr-3">{{file.title}}
-                                </button>
+                                <a href="{{file.1}}" download="{{file.0}}" class="btn btn-primary btn-sm">
+                                    <img width="20px" src="{% static 'imgs/icons/document.svg' %}" class="mr-3">{{file.0}}
+                                </a>
                                 </div>
                             </div>
                             </li>
                         {% endfor %}
+                    {% endif %}
                     </ul>
                 </div>
                 <div class="col-8">{% include "team/join.html" %}</div>

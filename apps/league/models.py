@@ -17,16 +17,16 @@ class Category(models.Model):
 class Files(models.Model):
 
     title =  models.CharField(max_length=50)
-    file_field = models.FileField(upload_to="uploads/", blank=True)
+    file_bucket = models.CharField(max_length=255, default=None)
     
     @classmethod
-    def create(cls, title, file_field):
-        file_upload = cls(title=title, file_field = file_field)
+    def create(cls, title, file_bucket):
+        file_upload = cls(title=title, file_bucket = file_bucket)
         # do something with the book
         return file_upload
 
     def __str__(self):
-        return f'Title {self.title} file{self.file_field}'
+        return f'Title {self.title} file{self.file_bucket}'
 class Competition(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
