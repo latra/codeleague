@@ -5,8 +5,23 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="jumbotron">
-        <form method="post">{% csrf_token %}
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
             {{ form|crispy }}
+            {% if competition.files.all|length > 0%}
+                <div class="row">
+                    <div class="col-2"><h5>File</h5></div>
+                    <div class="col-4"><h5>Custom file name</h5></div>
+                </div>  
+                {% for file in competition.files.all %}
+                    <div type="row justify-content-md-center">
+                        <div class="row">
+                            <div class="col-2">{{file.title}}</div>
+                            <div class="col-4"><input type="text" class="form-control" name="title{{file.id}}" id="title{{file.id}}" value="{{file.title}}"></div>
+                        </div>    
+                    </div>
+                {% endfor %}
+            {% endif %}
             <input type="submit" value="Update">
         </form>
     </div>

@@ -35,6 +35,7 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Competition
     fields = ['title', 'description']
     template_name = 'competition/competition_update_form.html'
+    context_object_name = 'competition'
 
     def get_context_data(self, **kwargs):
         context = {}
@@ -43,6 +44,13 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         competition = Competition.objects.get(pk=self.kwargs['pk'])
         return competition.owner.pk == self.request.user.pk
+    def form_valid(self, form):
+        competition = form.save()
+        for update_file in competition.files.all():
+            update_file.title = self.request.POST.get('title'+str(update_file.id))
+            update_file.save()
+        update_file.save()
+        return http.HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse_lazy('league:home')
