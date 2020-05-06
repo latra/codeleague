@@ -46,10 +46,21 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return competition.owner.pk == self.request.user.pk
     def form_valid(self, form):
         competition = form.save()
+        print(self.request.POST)
         for update_file in competition.files.all():
-            update_file.title = self.request.POST.get('title'+str(update_file.id))
-            update_file.save()
-        update_file.save()
+            if (self.request.POST.get('delete' + str(update_file.id))):
+                competition.files.remove(update_file)
+                update_file.delete()
+            else:
+                update_file.title = self.request.POST.get('title'+str(update_file.id))
+                update_file.save()
+        competition.save()
+        files = self.request.FILES.getlist('files')
+        for file_name in files:
+            file_data = Files.create(str(file_name), file_name)
+            file_data.save()
+            competition.files.add(file_data)
+        competition.save()
         return http.HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):

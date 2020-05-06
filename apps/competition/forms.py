@@ -27,7 +27,7 @@ class CustomSplitDateTimeWidget(forms.MultiWidget):
 
 
 class CompetitionCreationForm(forms.ModelForm):
-    files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     class Meta:
         model = Competition
         fields = '__all__'
