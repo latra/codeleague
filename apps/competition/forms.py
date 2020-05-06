@@ -60,3 +60,8 @@ class TeamLeaveForm(forms.ModelForm):
     class Meta:
         model = Team
         fields = []
+
+class PublishAnswerForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = []
