@@ -18,22 +18,23 @@
                     {% endif %}
                     <div class="row">
                         <div class="col-12">
-                            <h4 class="card-title">{{ compet.title }}{% if compet.is_competition_opened %}
-                                <span class="badge badge-success"
-                                      style="background-color: #74DA47; border-color: #74DA47; color: #000">In progress</span>
+                            <h4 class="card-title">{{ compet.title }}
+                                {% if compet.is_competition_opened %}
+                                    <span class="badge badge-success"
+                                        style="background-color: #74DA47; border-color: #74DA47; color: #000">In progress</span>
                                 {% else %}
-                                <span class="badge badge-danger"
-                                      style="background-color: #EF3B3B; border-color: #EF3B3B; color: #000">Finalized</span>
+                                    <span class="badge badge-danger"
+                                        style="background-color: #EF3B3B; border-color: #EF3B3B; color: #000">Finalized</span>
                                 {% endif %}</h4>
                         </div>
 
                     </div>
                     {% if compet.is_inscription_opened %}
-                    <span class="badge badge-success"
-                          style="background-color: #74DA47; border-color: #74DA47; color: #000">Inscriptions opened</span>
+                        <span class="badge badge-success"
+                            style="background-color: #74DA47; border-color: #74DA47; color: #000">Inscriptions opened</span>
                     {% else %}
-                    <span class="badge badge-danger"
-                          style="background-color: #EF3B3B; border-color: #EF3B3B; color: #000">Inscriptions closed</span>
+                        <span class="badge badge-danger"
+                            style="background-color: #EF3B3B; border-color: #EF3B3B; color: #000">Inscriptions closed</span>
                     {% endif %}
 
                     <p class="card-text pt-3">
