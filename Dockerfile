@@ -24,4 +24,7 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 RUN adduser -D runner
+
+RUN pip install behave
+RUN pip install splinter
 USER runner
