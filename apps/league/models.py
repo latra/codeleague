@@ -51,15 +51,24 @@ class Competition(models.Model):
         return False
 
 
+
+class Submit(models.Model):
+    description = models.TextField()
+    githuburl = models.URLField( blank=True, max_length=200)
+    files = models.ManyToManyField(Files, blank=True)
+    submit_date = models.DateField( auto_now=True )
+    team_id = models.IntegerField(null=True)
+    def __str__(self):
+        return f'Submision at day ({self.submit_date})'
+    
 class Team(models.Model):
     name = models.CharField(max_length=25, unique=True)
     ranking = models.ForeignKey('Ranking', on_delete=models.CASCADE, null=True)
     members = models.ManyToManyField(LeagueUser, related_name='participants')
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, null=True)
-
+    submition = models.ForeignKey(Submit, on_delete=models.CASCADE, null=True)
     def __str__(self):
         return f'Team {self.name} in {self.competition} : {self.members.all()}'
-
 
 class Ranking(models.Model):
     score = models.PositiveIntegerField(null=False, default=0)
