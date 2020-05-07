@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.forms import SplitDateTimeWidget
 from django.contrib.admin import widgets
-from apps.league.models import Competition, Team
+from apps.league.models import Competition, Team, Submit
 from django import forms
 from django.forms.utils import to_current_timezone
 
@@ -62,6 +62,8 @@ class TeamLeaveForm(forms.ModelForm):
         fields = []
 
 class PublishAnswerForm(forms.ModelForm):
+    files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     class Meta:
-        model = Team
-        fields = []
+        model = Submit
+        fields = '__all__'
+        exclude = ['files', 'team_id']
