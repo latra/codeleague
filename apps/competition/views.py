@@ -80,13 +80,12 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return reverse_lazy('league:home')
 
 
-class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateView):
+class CompetitionDetail(LoginRequiredMixin, generic.DetailView):
     login_url = reverse_lazy('account:login')
     redirect_field_name = 'redirect_to'
     context_object_name = 'competition'
     template_name = 'competition/detail.html'
     success_url = reverse_lazy('competition:join-team')
-    form_class = TeamJoinForm
 
     queryset = Competition.objects.all()
 

@@ -28,15 +28,20 @@ class CustomSplitDateTimeWidget(forms.MultiWidget):
 
 class CompetitionCreationForm(forms.ModelForm):
     files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    data_start_inscription = forms.SplitDateTimeField()
+    data_finish_inscription = forms.SplitDateTimeField()
+    data_start_competition = forms.SplitDateTimeField()
+    data_finish_competition = forms.SplitDateTimeField()
+
     class Meta:
         model = Competition
         fields = '__all__'
         exclude = ['categories', 'owner', 'files']
         widgets = {
-            'data_start_inscription': forms.SelectDateWidget(),
-            'data_finish_inscription': forms.SelectDateWidget(),
-            'data_start_competition': forms.SelectDateWidget(),
-            'data_finish_competition': forms.SelectDateWidget(),
+            'data_start_inscription': forms.AdminSplitDateTimeWidget(),  # date_format="%m/%d/%Y", time_format="%H:%M:%S"),
+            'data_finish_inscription': forms.SplitDateTimeWidget(),  # date_format="%m/%d/%Y", time_format="%H:%M:%S"),
+            'data_start_competition': forms.SplitDateTimeWidget(),  # date_format="%m/%d/%Y", time_format="%H:%M:%S"),
+            'data_finish_competition': forms.SplitDateTimeWidget(),  # date_format="%m/%d/%Y", time_format="%H:%M:%S"),
         }
 
 
@@ -48,21 +53,29 @@ class TeamCreationForm(forms.ModelForm):
 
 class TeamJoinForm(forms.ModelForm):
     action = forms.CharField(max_length=30, required=False)
+
     class Meta:
         model = Team
         fields = []
+
+
 class DownloadFile(forms.ModelForm):
     action = forms.CharField(max_length=30, required=False)
+
     class Meta:
         model = Competition
         fields = []
+
+
 class TeamLeaveForm(forms.ModelForm):
     class Meta:
         model = Team
         fields = []
 
+
 class PublishAnswerForm(forms.ModelForm):
     files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+
     class Meta:
         model = Submit
         fields = '__all__'
