@@ -37,6 +37,10 @@ class CompetitionCreationForm(forms.ModelForm):
             'data_finish_inscription': forms.SelectDateWidget(),
             'data_start_competition': forms.SelectDateWidget(),
             'data_finish_competition': forms.SelectDateWidget(),
+            'hour_start_inscription': forms.TimeInput(),
+            'hour_finish_inscription': forms.TimeInput(),
+            'hour_start_competition': forms.TimeInput(),
+            'hour_finish_competition': forms.TimeInput(),
         }
 
 

@@ -1,4 +1,5 @@
 from django.core.management import BaseCommand
+from django.db.models.functions import datetime
 
 from apps.league.models import LeagueUser, Competition, Category, Team, Ranking
 
@@ -44,6 +45,15 @@ class Command(BaseCommand):
         comp = Competition.objects.create(title='I Blockchain League',
                                           description='Now it comes the I Blockhain League sponsered by Amazon.',
                                           owner=admin,
+                                          data_start_inscription=datetime.datetime(year=2012, month=3, day=31, 11, 6, 5,
+                                                                                   182371),
+                                          hour_start_inscription=,
+                                          data_finish_inscription=,
+                                          hour_finish_inscription=,
+                                          data_start_competition=,
+                                          hour_start_competition=,
+                                          data_finish_competition=,
+                                          hour_finish_competition=,
                                           )
         comp.categories.add(cats[0])
         comp.categories.add(cats[2])
