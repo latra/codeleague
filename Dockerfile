@@ -20,6 +20,9 @@ RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
 # Install psql command used to check when postgres is ready.
 RUN apk update && apk add postgresql-client
 
+# Install chromium and chromium-chromedriver to E2E tests
+RUN apk add chromium chromium-chromedriver
+
 RUN pip install -r requirements.txt
 
 COPY . /app
