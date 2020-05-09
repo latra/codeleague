@@ -1,11 +1,10 @@
-Feature: List all teams in a competition
-  In order to keep myself up to date about teams registered in a competition
+Feature: List all categories
+  In order to have competitions filtered in some way
   As a user
-  I want to list all the teams of a competition
-
-  Background: There are registered users and 3 teams of a competition
-    Given Exists a user "user1" with password "password"
-    And Exists a user "user2" with password "password"
+  I want to list all the categories
+  Background: There is a category and a registered user
+    Given Exists a user "user" with password "password"
+    And Exists a category  with password "password"
     And Exists a user "user3" with password "password"
     And Exists a competition registered by "user1"
       | title        | description              | data_start_inscription_0 | data_start_inscription_1 | data_finish_inscription_0 | data_finish_inscription_1 | data_start_competition_0 | data_start_competition_1 | data_finish_competition_0 | data_finish_competition_1 |
@@ -20,4 +19,3 @@ Feature: List all teams in a competition
       | name   |
       | team1  |
       | team2  |
-
