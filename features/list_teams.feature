@@ -5,3 +5,8 @@ Feature: List all teams in a competition
 
   Background: There are registered users and 3 teams
     Given Exists a user "user1" with password "password"
+    And I login as user "user1 with password "password"
+      | name |
+      | Team1 |
+      | Team2 |
+      | Team
