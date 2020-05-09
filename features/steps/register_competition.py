@@ -6,9 +6,10 @@ from django.db.models import Q
 use_step_matcher("parse")
 
 
-@when(u'I register a competition')
-def step_impl(context):
+@when(u'I register a competition as "{username}"')
+def step_impl(context, username):
     """
+    :type username: str
     :type context: behave.runner.Context
     """
     for row in context.table:
