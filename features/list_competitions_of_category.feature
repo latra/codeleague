@@ -6,7 +6,7 @@ Feature: List all competitions of a category
     Given Exists a user "user" with password "password"
     And Exists a category "category1" with description "category1 description"
     And Exists a category "category2" with description "category2 description"
-    And Exists a competition registered by "user"
+    And Exists competition registered by "user"
       | title        | description              | data_start_inscription_0 | data_start_inscription_1 | data_finish_inscription_0 | data_finish_inscription_1 | data_start_competition_0 | data_start_competition_1 | data_finish_competition_0 | data_finish_competition_1 | categories  |
       | Competition1 | Competition1 description | 2020-05-09               | 17:00:00                 | 2020-05-20                | 17:00:00                  | 2020-05-21               | 17:00:00                 | 2020-05-22                | 17:00:00                  | category1   |
       | Competition2 | Competition2 description | 2020-05-07               | 17:00:00                 | 2020-05-15                | 17:00:00                  | 2020-05-16               | 17:00:00                 | 2020-06-16                | 18:00:00                  | category1   |

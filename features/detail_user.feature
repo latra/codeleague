@@ -8,8 +8,6 @@ Feature: Detail user
 
    Scenario: Show user information
      Given I login as user "user" with password "password"
-     When I visit my profile
+     When I visit profile of "user"
      Then I'm at "accounts/u/1/"
-     Then I view all of my profile information
-      | name  |
-      | user  |
+     Then I view profile of "user" information
