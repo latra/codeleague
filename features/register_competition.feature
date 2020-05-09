@@ -9,8 +9,8 @@ Feature: Register Competition
     Given Exists a user "user" with password "password"
 
   Scenario: Register a competition without a file
-    Given I login as a user "user" with password "password"
-    When I register a competition
+    Given I login as user "user" with password "password"
+    When I register a competition as "user"
       | title        | description              | data start inscription | data finish inscription | data start competition | data finish competition |
       | Competition1 | Competition1 description | 2020-05-09             | 2020-05-20              | 2020-05-21             | 2020-05-22              |
     Then I'm viewing the home page where there are the details of all the competitions created
@@ -19,11 +19,16 @@ Feature: Register Competition
     And There are 1 competitions
 
   Scenario: Register a competition
-    Given I login as a user "user" with password "password"
+    Given I login as user "user" with password "password"
     When I register a competition
       | title         | description              | data start inscription | data finish inscription | data start competition | data finish competition | files              |
       | Competition1  | Competition1 description | 2020-05-09             | 2020-05-20              | 2020-05-21             | 2020-05-22              | features/comp1.jpg |
     Then I'm vewing the home page where there are the details of all the competitions created
+
+  Scenario: Try to register a competition but not logged in
+    Given I'm not logged in
+    When I want to register a competition
+    Then There is no "create" link available
 
 
 
