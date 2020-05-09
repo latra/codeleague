@@ -32,7 +32,6 @@ def step_impl(context, username, password):
 @given('I\'m not logged in')
 def step_impl(context):
     context.browser.visit(context.get_url('account:logout'))
-    print(context.browser.url)
     assert context.browser.url == context.get_url('league:home')
 
 
