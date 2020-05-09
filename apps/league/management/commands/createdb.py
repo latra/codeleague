@@ -99,3 +99,24 @@ class Command(BaseCommand):
         comp.categories.add(cats[0])
         comp.categories.add(cats[2])
         comp.save()
+        comp = Competition.objects.create(title='I Deep Learning League',
+                                          description='LleidaHack has creted the first Deep Learning League. You can join the league before competition starts.',
+                                          owner=admin,
+                                          data_start_inscription=datetime.datetime(year=2017, month=3, day=19, hour=11,
+                                                                                   minute=55, second=00,
+                                                                                   microsecond=182371),
+                                          data_finish_inscription=datetime.datetime(year=2023, month=4, day=20, hour=11,
+                                                                                    minute=12, second=00,
+                                                                                    microsecond=182371),
+                                          data_start_competition=datetime.datetime(year=2019, month=5, day=10, hour=20,
+                                                                                   minute=23, second=00,
+                                                                                   microsecond=182371),
+                                          data_finish_competition=datetime.datetime(year=2024, month=5, day=31, hour=21,
+                                                                                    minute=16, second=00,
+                                                                                    microsecond=182371),
+                                          )
+        comp.categories.add(cats[1])
+        comp.categories.add(cats[3])
+        comp.categories.add(cats[4])
+        comp.categories.add(cats[5])
+        comp.save()

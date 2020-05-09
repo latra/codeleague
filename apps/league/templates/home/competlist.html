@@ -21,9 +21,13 @@
                                 <h4 class="card-title">{{ compet.title }}{% if compet.is_competition_opened %}
                                     <span class="badge badge-success"
                                           style="background-color: #74DA47; border-color: #74DA47; color: #000">In progress</span>
+                                {% elif compet.is_inscription_opened %}
+                                    <span class="badge badge-warning"
+                                          style="background-color: #dacb47; border-color: #dacb47; color: #000">Inscriptions</span>
                                 {% else %}
-                                    <span class="badge badge-danger"
+                                    <span class="badge badge-warning"
                                           style="background-color: #EF3B3B; border-color: #EF3B3B; color: #000">Finalized</span>
+
                                 {% endif %}</h4>
                             </div>
 
