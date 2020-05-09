@@ -3,9 +3,9 @@ Feature: List all teams in a competition
   As a user
   I want to list all the teams of a competition
 
-  Background: There are registered users and 3 teams
+  Background: There are registered users and 3 teams of a competition
     Given Exists a user "user1" with password "password"
-    And Exists a user "user2 with password "password"
+    And Exists a user "user2" with password "password"
     And Exists a user "user3" with password "password"
     And Exists a competition registered by "user1"
       | title        | description              | data_start_inscription_0 | data_start_inscription_1 | data_finish_inscription_0 | data_finish_inscription_1 | data_start_competition_0 | data_start_competition_1 | data_finish_competition_0 | data_finish_competition_1 |
