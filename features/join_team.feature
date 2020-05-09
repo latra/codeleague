@@ -12,7 +12,7 @@ Feature: Join Team
       | Competition1 | Competition1 description | 2020-05-09               | 17:00:00                 | 2020-05-20                | 17:00:00                  | 2020-05-21               | 17:00:00                 | 2020-05-22                | 17:00:00                  |
     And Exists team "team1" at competition "Competition1" by "user2"
 
-    Scenario: Joined an existing team
-      Given I login as user "user3" with password "password"
-      When I join at team "Team1"
-      Then There are 2 members
+  Scenario: Joined an existing team
+    Given I login as user "user3" with password "password"
+    When I join at team "Team1"
+    Then There are 2 members
