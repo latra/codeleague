@@ -27,6 +27,7 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
         competition.owner = self.request.user
         files = self.request.FILES.getlist('files')
         competition.save()
+        print(files)
         for file_name in files:
             datecreated = datetime.datetime.now()
             s3.Bucket(os.getenv('AWS_BUCKET')).put_object(Key= "competition/" + str(competition.id) + "_"+ str(datecreated)  + "_" +  str(file_name), Body=file_name)
@@ -208,14 +209,15 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
         submit = form.save()
         res = []
         delete = False
-        for update_file in team.submition.files.all():
-            if (self.request.POST.get('delete' + str(update_file.id))):
-                res.append({'Key': update_file.file_bucket})
-                team.submition.files.remove(update_file)
-                update_file.delete()
-                delete=True
-            else:
-                submit.files.add(update_file)
+        if team.submition:
+            for update_file in team.submition.files.all():
+                if (self.request.POST.get('delete' + str(update_file.id))):
+                    res.append({'Key': update_file.file_bucket})
+                    team.submition.files.remove(update_file)
+                    update_file.delete()
+                    delete=True
+                else:
+                    submit.files.add(update_file)
         if delete: s3.Bucket(os.getenv('AWS_BUCKET')).delete_objects(Delete={'Objects': res})
         submit.team_id = team.id
         submit.save()
@@ -229,8 +231,6 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
             file_data.save()
             submit.files.add(file_data)
         submit.save()
-
-        
         return http.HttpResponseRedirect(self.get_success_url())
 
 
