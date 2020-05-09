@@ -31,5 +31,10 @@ Feature: List all competitions
       | Competition7 | Competition7 description | 2020-06-12               | 17:00:00                 | 2020-06-20                | 17:00:00                  | 2020-06-21               | 17:00:00                 | 2020-06-24                | 18:00:00                  |
     And The list contains 7 competitions
 
+  Scenario: Try to list all competitions but not logged in
+    Given I'm not logged in
+    When I want to view all competitions
+    Then Need to login to have "competition/" link available
+
 
 

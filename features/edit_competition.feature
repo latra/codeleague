@@ -10,23 +10,23 @@ Feature: Edit competition
       | title        | description              | data_start_inscription_0 | data_start_inscription_1 | data_finish_inscription_0 | data_finish_inscription_1 | data_start_competition_0 | data_start_competition_1 | data_finish_competition_0 | data_finish_competition_1 |
       | Competition1 | Competition1 description | 2020-05-09               | 17:00:00                 | 2020-05-20                | 17:00:00                  | 2020-05-21               | 17:00:00                 | 2020-05-22                | 17:00:00                  |
 
-    Scenario: Edit owned competition registry description
-      Given I login as user "user1" with password "password"
-      Then I'm at "competition/id/1/edit/"
-      When I edit the competition with name "Competition1"
-        | description                 |
-        | description of Competition1 |
-      Then I'm viewing the details page for this competition for "user1"
-        | title        | description                 |
-        | Competition1 | description of Competition1 |
-      And there are 1 competitions
+  Scenario: Edit owned competition registry description
+    Given I login as user "user1" with password "password"
+    Then I'm at "competition/id/1/edit/"
+    When I edit the competition with name "Competition1"
+      | description                 |
+      | description of Competition1 |
+    Then I'm viewing the details page for this competition for "user1"
+      | title        | description                 |
+      | Competition1 | description of Competition1 |
+    And there are 1 competitions
 
-    Scenario: Try to edit competition but not logged in
-      Given I'm not logged in
-      When I want to edit a competition
-      Then There is no "edit" link available
+  Scenario: Try to edit competition but not logged in
+    Given I'm not logged in
+    When I want to edit a competition
+    Then Need to login to have "competition/id/1/edit/" link available
 
   Scenario: Try to edit competition but not the owner no edit button
     Given I login as user "user2" with password "password"
     When I view the details for competition "Competition1"
-    Then There is no "edit" link available
+    Then There is no "competition/id/1/edit/" link available

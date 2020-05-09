@@ -18,3 +18,8 @@ Feature: Register submission
     ...
     Then
     And there are 1 submissions
+
+  Scenario: Try to register submissions but not logged in
+    Given I'm not logged in
+    When I want to create a submission for a competition
+    Then Need to login to have "competition/id/1/submit-answer/" link available

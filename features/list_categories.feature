@@ -15,3 +15,8 @@ Feature: List all categories
       | name       | description           |
       | category1  | category1 description |
       | category2  | category2 description |
+
+  Scenario: Try to list all categories but not logged in
+    Given I'm not logged in
+    When I want to view all categories
+    Then Need to login to have "category" link available
