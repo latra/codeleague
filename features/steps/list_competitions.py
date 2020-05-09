@@ -16,8 +16,11 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    for row in context.table:
-        context.browser.find_by_css('card').find_by_css('card-title').find_by_text(f'{row["title"]}')
+    for i, row in enumerate(context.table):
+        card = context.browser.find_by_css('div.card')
+        card_title = card.find_by_css('h4.card-title')
+        card_text_title = card_title.find_by_text(f'{row["title"]}')
+        assert card_text_title is not None
 
 
 @step(u'The list contains {count:n} competitions')
@@ -26,4 +29,5 @@ def step_impl(context, count):
     :type count: str
     :type context: behave.runner.Context
     """
-    raise NotImplementedError(u'STEP: And The list contains 7 competitions')
+    cards = context.browser.find_by_css('div.card')
+    assert len(cards) == count
