@@ -1,7 +1,7 @@
 Feature: Register Team
   In order to create a team
   As a user
-  I want to register a team in the corresponding competition along with its name, some members and the corresponding competition
+  I want to register a team in the corresponding competition along with its name
 
   Background: There are registered users and a competition by one of them
     Given Exists a user "user1" with password "password"
