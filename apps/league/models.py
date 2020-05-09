@@ -4,6 +4,8 @@ from django.db import models
 # Create your models here.
 from django.db.models.functions import datetime
 from django.utils import timezone
+from django.conf import settings
+from django.utils.timezone import make_aware, get_current_timezone
 
 from apps.account.models import LeagueUser
 
@@ -34,7 +36,7 @@ class Competition(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     owner = models.ForeignKey(LeagueUser, on_delete=models.CASCADE, null=True)
-    data_start_inscription = models.DateTimeField(default=datetime.timezone.datetime.now)
+    data_start_inscription = models.DateTimeField(default=timezone.now)
     data_finish_inscription = models.DateTimeField()
     data_start_competition = models.DateTimeField()
     data_finish_competition = models.DateTimeField()

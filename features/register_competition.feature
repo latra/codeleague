@@ -13,7 +13,7 @@ Feature: Register Competition
     When I register a competition
       | title        | description              | data start inscription | data finish inscription | data start competition | data finish competition |
       | Competition1 | Competition1 description | 2020-05-09             | 2020-05-20              | 2020-05-21             | 2020-05-22              |
-    Then I'm viewing the home page where there are the details of all the competitions created
+    Then I'm viewing the details page for the first competition
       | title        | description              | data start inscription | data finish inscription | data start competition | data finish competition |
       | Competition1 | Competition1 description | 2020-05-09             | 2020-05-20              | 2020-05-21             | 2020-05-22              |
     And There are 1 competitions
@@ -23,7 +23,7 @@ Feature: Register Competition
     When I register a competition
       | title         | description              | data start inscription | data finish inscription | data start competition | data finish competition | files              |
       | Competition1  | Competition1 description | 2020-05-09             | 2020-05-20              | 2020-05-21             | 2020-05-22              | features/comp1.jpg |
-    Then I'm vewing the home page where there are the details of all the competitions created
+    Then I'm viewing the details page for the first competition
 
 
 

@@ -16,10 +16,11 @@ print(os.getenv('AWS_SECRET'))
 class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
     login_url = reverse_lazy('account:login')
     form_class = CompetitionCreationForm
+    model = Competition
     template_name = 'competition/create.html'
 
-    def get_success_url(self):
-        return reverse_lazy('league:home')
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('competition:detail', kwargs={'pk': kwargs.get('pk')})
         # return reverse_lazy('competition:detail', kwargs={'pk': self.request.user.pk})
 
     def form_valid(self, form):
@@ -27,7 +28,6 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
         competition.owner = self.request.user
         files = self.request.FILES.getlist('files')
         competition.save()
-        print(files)
         for file_name in files:
             datecreated = datetime.datetime.now()
             s3.Bucket(os.getenv('AWS_BUCKET')).put_object(Key= "competition/" + str(competition.id) + "_"+ str(datecreated)  + "_" +  str(file_name), Body=file_name)
@@ -35,8 +35,7 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
             file_data.save()
             competition.files.add(file_data)
         competition.save()
-
-        return http.HttpResponseRedirect(self.get_success_url())
+        return http.HttpResponseRedirect(self.get_success_url(pk=competition.id))
 
 
 class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
