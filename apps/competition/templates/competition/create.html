@@ -12,7 +12,7 @@
             </div>
             <div class="row d-flex justify-content-center">
                 <div class="container col-10">
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form|crispy }}
                         <button class="btn btn-warning" type="submit">Sign Up</button>
