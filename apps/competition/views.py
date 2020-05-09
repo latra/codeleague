@@ -83,10 +83,10 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             file_data.save()
             competition.files.add(file_data)
         competition.save()
-        return http.HttpResponseRedirect(self.get_success_url())
+        return http.HttpResponseRedirect(self.get_success_url(pk=competition.id))
 
-    def get_success_url(self):
-        return reverse_lazy('league:home')
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('competition:detail', kwargs={'pk': kwargs.get('pk')})
 
 
 class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateView):
