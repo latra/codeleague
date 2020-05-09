@@ -19,6 +19,7 @@ Feature: List all competitions
   Scenario: List all competitions
     Given I login as user "user" with password "password"
     When I list competitions
+    Then I'm at "competition/"
     Then I'm viewing a list containing all the competitions
       | title        | description              | data_start_inscription_0 | data_start_inscription_1 | data_finish_inscription_0 | data_finish_inscription_1 | data_start_competition_0 | data_start_competition_1 | data_finish_competition_0 | data_finish_competition_1 |
       | Competition1 | Competition1 description | 2020-05-09               | 17:00:00                 | 2020-05-20                | 17:00:00                  | 2020-05-21               | 17:00:00                 | 2020-05-22                | 17:00:00                  |
@@ -28,7 +29,7 @@ Feature: List all competitions
       | Competition5 | Competition5 description | 2020-05-26               | 17:00:00                 | 2020-05-30                | 17:00:00                  | 2020-05-31               | 17:00:00                 | 2020-06-01                | 18:00:00                  |
       | Competition6 | Competition6 description | 2020-06-02               | 17:00:00                 | 2020-06-05                | 17:00:00                  | 2020-06-06               | 17:00:00                 | 2020-06-06                | 18:00:00                  |
       | Competition7 | Competition7 description | 2020-06-12               | 17:00:00                 | 2020-06-20                | 17:00:00                  | 2020-06-21               | 17:00:00                 | 2020-06-24                | 18:00:00                  |
-    And The list contains 3 competitions
+    And The list contains 7 competitions
 
 
 

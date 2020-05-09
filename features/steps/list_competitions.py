@@ -8,5 +8,4 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    context.browser.visit(context.get_url('competition:createcompetition'))
-    raise NotImplementedError(u'STEP: When I list competitions')
+    context.browser.visit(context.get_url('competition:list'))
