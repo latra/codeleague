@@ -10,6 +10,7 @@ Feature: List all categories
   Scenario: List all categories
     Given I login as user "user" with password "password"
     When I list categories
+    Then I'm at "category/"
     Then I'm viewing a list containing all the categories
       | name       | description           |
       | category1  | category1 description |
