@@ -8,6 +8,10 @@ from django.forms.utils import to_current_timezone
 
 class CompetitionCreationForm(forms.ModelForm):
     files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    data_start_inscription = forms.SplitDateTimeField()
+    data_finish_inscription = forms.SplitDateTimeField()
+    data_start_competition = forms.SplitDateTimeField()
+    data_finish_competition = forms.SplitDateTimeField()
 
     class Meta:
         model = Competition
