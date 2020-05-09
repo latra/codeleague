@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 # Create your models here.
@@ -34,28 +35,33 @@ class Competition(models.Model):
     description = models.TextField()
     owner = models.ForeignKey(LeagueUser, on_delete=models.CASCADE, null=True)
     data_start_inscription = models.DateField(default=datetime.timezone.datetime.now)
-    hour_start_inscription = models.TimeField()
-    data_finish_inscription = models.DateField(default=datetime.timezone.datetime.now)
-    hour_finish_inscription = models.TimeField()
-    data_start_competition = models.DateField(default=datetime.timezone.datetime.now)
-    hour_start_competition = models.TimeField()
-    data_finish_competition = models.DateField(default=datetime.timezone.datetime.now)
-    hour_finish_competition = models.TimeField()
+    data_finish_inscription = models.DateField()
+    data_start_competition = models.DateField()
+    data_finish_competition = models.DateField()
     categories = models.ManyToManyField(Category, blank=True)
     files = models.ManyToManyField(Files, blank=True)
 
     def __str__(self):
         return f'{self.title}'
 
-    def is_inscription_opened(self):
-        if self.data_start_inscription <= timezone.now() < self.data_finish_inscription:
-            return True
-        return False
+    def save(self, **kwargs):
+        if self.data_start_inscription < self.data_finish_inscription < self.data_finish_competition and \
+                self.data_start_competition < self.data_finish_competition:
+            super(Competition, self).save(**kwargs)
+        else:
+            raise ValidationError("Dates are not correct.")
 
-    def is_competition_opened(self):
-        if self.data_start_competition <= timezone.now() < self.data_finish_competition:
-            return True
-        return False
+
+def is_inscription_opened(self):
+    if self.data_start_inscription <= timezone.now() < self.data_finish_inscription:
+        return True
+    return False
+
+
+def is_competition_opened(self):
+    if self.data_start_competition <= timezone.now() < self.data_finish_competition:
+        return True
+    return False
 
 
 class Submit(models.Model):
