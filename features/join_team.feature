@@ -14,5 +14,5 @@ Feature: Join Team
 
   Scenario: Joined an existing team
     Given I login as user "user3" with password "password"
-    When I join team "team1"
+    When I join team "team1" at competition "Competition1"
     Then There are 2 members
