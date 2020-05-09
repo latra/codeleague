@@ -1,4 +1,4 @@
-Feature: List all competitions
+Feature: List competitions
   In order to keep myself up to date about competitions registered in codeleague
   As a user
   I want to list all the competitions
@@ -29,6 +29,3 @@ Feature: List all competitions
       | Competition6 | Competition6 description | 2020-06-02               | 17:00:00                 | 2020-06-05                | 17:00:00                  | 2020-06-06               | 17:00:00                 | 2020-06-06                | 18:00:00                  |
       | Competition7 | Competition7 description | 2020-06-12               | 17:00:00                 | 2020-06-20                | 17:00:00                  | 2020-06-21               | 17:00:00                 | 2020-06-24                | 18:00:00                  |
     And The list contains 7 competitions
-
-
-
