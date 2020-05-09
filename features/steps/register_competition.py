@@ -50,5 +50,4 @@ def step_impl(context):
     :type context: behave.runner.Context
     """
     context.browser.visit(context.get_url('competition:createcompetition'))
-    print(context.browser.url)
     assert context.browser.url != context.get_url('competition:createcompetition')

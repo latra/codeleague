@@ -4,6 +4,7 @@ from apps.competition.apps import CompetitionConfig
 
 app_name = 'competition'
 urlpatterns = [
+    path('', views.ListCompetition.as_view(), name='list'),
     path('create/', views.CreateCompetitionView.as_view(), name='createcompetition'),
     path('id/<int:pk>/', views.CompetitionDetail.as_view(), name='detail'),
     path('id/<int:pk>/edit/', views.CompetitionUpdate.as_view(), name='edit'),
