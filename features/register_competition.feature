@@ -1,4 +1,4 @@
-Feature: Register Competition
+Feature: Register competition
   In order to organize a competition
   As a user
   I want to register a competition along with its title, description, date when inscriptions start, date when
@@ -11,6 +11,7 @@ Feature: Register Competition
   Scenario: Register a competition without
     Given I login as user "user" with password "password"
     When I register a competition as "user"
+    Then I'm at "competition/create/"
       | title        | description              | data_start_inscription_0 | data_start_inscription_1 | data_finish_inscription_0 | data_finish_inscription_1 | data_start_competition_0 | data_start_competition_1 | data_finish_competition_0 | data_finish_competition_1 |
       | Competition1 | Competition1 description | 2020-05-09               | 17:00:00                 | 2020-05-20                | 17:00:00                  | 2020-05-21               | 17:00:00                 | 2020-05-22                | 17:00:00                  |
     Then I'm viewing the details page for the first competition
