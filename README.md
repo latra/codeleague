@@ -35,6 +35,10 @@ Further more, it is a good practice to create a super user if it is needed a gre
 ```
 $ docker-compose exec web python manage.py createsuperuser
 ```
+In addition, if you want to have a database with predefined information, it can be used the following command:
+```
+$ docker-compose exec web python manage.py createdb
+```
 ### Configuration
 
 The server will be set up by default on port 8000

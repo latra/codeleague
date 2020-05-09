@@ -27,6 +27,7 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
         competition.owner = self.request.user
         files = self.request.FILES.getlist('files')
         competition.save()
+        print(files)
         for file_name in files:
             datecreated = datetime.datetime.now()
             s3.Bucket(os.getenv('AWS_BUCKET')).put_object(Key= "competition/" + str(competition.id) + "_"+ str(datecreated)  + "_" +  str(file_name), Body=file_name)
@@ -172,6 +173,7 @@ class SearchCompetitions(LoginRequiredMixin, generic.TemplateView):
         return context
 
 
+
 class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     login_url = reverse_lazy('account:login')
     redirect_field_name = 'redirect_to'
@@ -207,14 +209,15 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
         submit = form.save()
         res = []
         delete = False
-        for update_file in team.submition.files.all():
-            if (self.request.POST.get('delete' + str(update_file.id))):
-                res.append({'Key': update_file.file_bucket})
-                team.submition.files.remove(update_file)
-                update_file.delete()
-                delete=True
-            else:
-                submit.files.add(update_file)
+        if team.submition:
+            for update_file in team.submition.files.all():
+                if (self.request.POST.get('delete' + str(update_file.id))):
+                    res.append({'Key': update_file.file_bucket})
+                    team.submition.files.remove(update_file)
+                    update_file.delete()
+                    delete=True
+                else:
+                    submit.files.add(update_file)
         if delete: s3.Bucket(os.getenv('AWS_BUCKET')).delete_objects(Delete={'Objects': res})
         submit.team_id = team.id
         submit.save()
@@ -228,11 +231,24 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
             file_data.save()
             submit.files.add(file_data)
         submit.save()
-
-        
         return http.HttpResponseRedirect(self.get_success_url())
 
 
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
 
+
+class CompetitionFinish(LoginRequiredMixin, UserPassesTestMixin, generic.TemplateView):
+    login_url = reverse_lazy('account:login')
+    template_name = 'team/list.html'
+
+    def test_func(self):
+        competition = Competition.objects.get(pk=self.kwargs['pk'])
+        return competition.owner.pk == self.request.user.pk
+
+    def get_context_data(self, **kwargs):
+        context = {'user': self.request.user}
+        teams = Team.objects.filter(competition=self.kwargs.get('pk'))
+        context['teams'] = teams
+        context.update(kwargs)
+        return super().get_context_data(**context)
