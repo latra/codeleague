@@ -1,10 +1,21 @@
 from behave import *
 
-use_step_matcher("re")
+
+use_step_matcher("parse")
 
 
-@step('Exists team "team1" at competition "Competition1" by "user2"')
-def step_impl(context):
+@step('Exists team "{team_name}" at competition "{title}" by "{member}"')
+def step_impl(context, team_name, title, member):
     """
+    :type team: str
+    :type title: str
+    :type member: str
     :type context: behave.runner.Context
     """
+    from apps.account.models import LeagueUser
+    from apps.league.models import Competition, Team
+    member = LeagueUser.objects.get(username=member)
+    comp = Competition.objects.get(title=title)
+    team = Team.objects.create(name=team_name, competition=comp)
+    team.members.add(member)
+    team.save()
