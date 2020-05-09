@@ -8,21 +8,12 @@ Feature: Register Team
     And Exists a user "user2" with password "password"
     And Exists a user "user3" with password "password"
     And Exists a competition registered by "user1"
-      | title        | description              | data start inscription | data finish inscription | data start competition | data finish competition |
-      | Competition1 | Competition1 description | 2020-05-09             | 2020-05-20              | 2020-05-21             | 2020-05-22              |
+      | title        | description              | data_start_inscription_0 | data_start_inscription_1 | data_finish_inscription_0 | data_finish_inscription_1 | data_start_competition_0 | data_start_competition_1 | data_finish_competition_0 | data_finish_competition_1 |
+      | Competition1 | Competition1 description | 2020-05-09               | 17:00:00                 | 2020-05-20                | 17:00:00                  | 2020-05-21               | 17:00:00                 | 2020-05-22                | 17:00:00                  |
 
-  Scenario: Register a public team
+  Scenario: Register a team
     Given I login as user "user2" with password "password"
-    When I register team at competition "Competition1"
-      | name   | members |
-      | Team 1 | user    |
-    Then There are 1 teams
-
-  Scenario: Register a team with a password
-    Given I login as user "user3" with password "password"
-    When I register team at competition "Competition1"
-      | name   | members | password |
-      | Team 2 | user    | password |
+    When I register team "team1" at competition "Competition1"
     Then There are 1 teams
 
   Scenario: Try to register a team but not logged in
