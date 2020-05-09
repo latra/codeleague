@@ -9,9 +9,8 @@ class Home(generic.ListView):
     context_object_name = 'competitions'
     template_name = 'home.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    def get_queryset(self, *args, **kwargs):
+        return filter(lambda x: x.is_inscription_opened(), self.model.objects.all().order_by('data_finish_competition'))
 
 
 class Info(generic.TemplateView):

@@ -10,8 +10,17 @@ import os, boto3, datetime
 
 s3 = boto3.resource('s3', aws_access_key_id=str(os.getenv('AWS_KEY')), aws_secret_access_key=str(os.getenv('AWS_SECRET')))
 s3_client = boto3.client('s3', aws_access_key_id=str(os.getenv('AWS_KEY')), aws_secret_access_key=str(os.getenv('AWS_SECRET')))
-print(os.getenv('AWS_KEY'))
-print(os.getenv('AWS_SECRET'))
+
+
+class ListCompetition(LoginRequiredMixin, generic.ListView):
+    model = Competition
+    template_name = 'competition/list.html'
+    context_object_name = 'competitions'
+    login_url = reverse_lazy('account:login')
+
+    def get_queryset(self, *args, **kwargs):
+        return self.model.objects.all().order_by('-data_finish_competition')
+
 
 class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
     login_url = reverse_lazy('account:login')
