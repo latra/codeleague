@@ -9,4 +9,5 @@ def step_impl(context, location):
     :type location: str
     :type context: behave.runner.Context
     """
-    raise NotImplementedError(u'STEP: Then I\'m at "competition/create/"')
+    uri = f'{context.get_url("account:home")}{location}'
+    assert context.browser.url == uri
