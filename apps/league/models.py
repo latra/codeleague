@@ -34,10 +34,10 @@ class Competition(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     owner = models.ForeignKey(LeagueUser, on_delete=models.CASCADE, null=True)
-    data_start_inscription = models.DateField(default=datetime.timezone.datetime.now)
-    data_finish_inscription = models.DateField()
-    data_start_competition = models.DateField()
-    data_finish_competition = models.DateField()
+    data_start_inscription = models.DateTimeField(default=datetime.timezone.datetime.now)
+    data_finish_inscription = models.DateTimeField()
+    data_start_competition = models.DateTimeField()
+    data_finish_competition = models.DateTimeField()
     categories = models.ManyToManyField(Category, blank=True)
     files = models.ManyToManyField(Files, blank=True)
 
@@ -52,16 +52,16 @@ class Competition(models.Model):
             raise ValidationError("Dates are not correct.")
 
 
-def is_inscription_opened(self):
-    if self.data_start_inscription <= timezone.now() < self.data_finish_inscription:
-        return True
-    return False
+    def is_inscription_opened(self):
+        if self.data_start_inscription <= timezone.now() < self.data_finish_inscription:
+            return True
+        return False
 
 
-def is_competition_opened(self):
-    if self.data_start_competition <= timezone.now() < self.data_finish_competition:
-        return True
-    return False
+    def is_competition_opened(self):
+        if self.data_start_competition <= timezone.now() < self.data_finish_competition:
+            return True
+        return False
 
 
 class Submit(models.Model):
