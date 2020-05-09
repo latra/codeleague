@@ -10,7 +10,7 @@ class Home(generic.ListView):
     template_name = 'home.html'
 
     def get_queryset(self, *args, **kwargs):
-        return self.model.objects.all().order_by('-data_finish_competition')
+        return filter(lambda x: x.is_inscription_opened(), self.model.objects.all().order_by('data_finish_competition'))
 
 
 class Info(generic.TemplateView):
