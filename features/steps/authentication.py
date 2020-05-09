@@ -28,3 +28,20 @@ def step_impl(context, username, password):
     form.find_by_value('login').first.click()
     assert context.browser.is_text_present('COMPETITIONS')
 
+
+@given('I\'m not logged in')
+def step_impl(context):
+    context.browser.visit(context.get_url('account:logout'))
+    print(context.browser.url)
+    assert context.browser.url == context.get_url('league:home')
+
+
+@then('Need to login to have "{path}" link available')
+def step_impl(context, path):
+    """
+    :type path: str
+    :type context: behave.runner.Context
+    """
+    uri = context.get_url('account:login') + f'?next=/{path}'
+    assert context.browser.url == uri
+

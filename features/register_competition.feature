@@ -22,7 +22,7 @@ Feature: Register Competition
   Scenario: Try to register a competition but not logged in
     Given I'm not logged in
     When I want to register a competition
-    Then There is no "create" link available
+    Then Need to login to have "competition/create/" link available
 
 
 
