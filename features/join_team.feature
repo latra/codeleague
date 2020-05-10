@@ -19,5 +19,5 @@ Feature: Join Team
 
   Scenario: Try to join a team of a competition but not logged in
     Given I'm not logged in
-    When I want to join a team
-    Then Need to login to have "join" link available
+    When I want to join at competition "Competition1"
+    Then Redirect to login to have "competition/id/1/" link available

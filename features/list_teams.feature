@@ -15,7 +15,7 @@ Feature: List all teams in a competition
 
   Scenario: List all teams of a competition
     Given I login as user "user1" with password "password"
-    When I list teams of "Competition1"
+    When I visit the competition with title "Competition1"
     Then I'm viewing a list containing all the teams of the competition
       | name   |
       | team1  |
@@ -23,6 +23,6 @@ Feature: List all teams in a competition
 
   Scenario: Try to list teams of a competition but not logged in
     Given I'm not logged in
-    When I want to view all the teams that participate in a competition
-    Then Need to login to have "teams" link available
+    When I visit the competition with title "Competition1"
+    Then Redirect to login to have "competition/id/1/" link available
 

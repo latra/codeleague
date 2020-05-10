@@ -19,3 +19,14 @@ def step_impl(context, team_name, title, member):
     team = Team.objects.create(name=team_name, competition=comp)
     team.members.add(member)
     team.save()
+
+
+@then("I'm viewing a list containing all the teams of the competition")
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    for i, row in enumerate(context.table):
+        card = context.browser.find_by_name(f'card_team_{row["name"]}')
+        print(card, f'card_team_{row["name"]}')
+        assert card is not None

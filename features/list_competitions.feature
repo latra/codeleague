@@ -33,7 +33,7 @@ Feature: List all competitions
 
   Scenario: Try to list all competitions but not logged in
     Given I'm not logged in
-    When I want to view all competitions
+    When I list competitions
     Then Need to login to have "competition/" link available
 
 

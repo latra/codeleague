@@ -26,5 +26,5 @@ Feature: List user participations
 
   Scenario: Try to list all participations in which we have participated but not logged in
     Given I'm not logged in
-    When I want to view all participations in competition
+    When I view participations of user "user1"
     Then Need to login to have "accounts/u/2/participations/" link available
