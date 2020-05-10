@@ -8,7 +8,7 @@ from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, Te
     PublishAnswerForm
 from apps.league.models import Team, Competition, Category, Files, Ranking
 
-import os, boto3, datetime
+import os, boto3, datetime,random
 
 s3 = boto3.resource('s3', aws_access_key_id=str(os.getenv('AWS_KEY')),
                     aws_secret_access_key=str(os.getenv('AWS_SECRET')))
@@ -143,10 +143,15 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
 
     def get_context_data(self, **kwargs):
         context = {}
+        r = lambda: random.randint(0,255)
+        context['data'] = [["puntuation", "table", { 'role': 'style' }]]
+
         context['user'] = self.request.user
         context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg)).order_by('ranking')
         context['haveTeam'] = False
         for group in context['groups']:
+            if group.submition and len(context['data'] < 10):
+                context['data'].append([group.name, int(group.ranking.score), 'color: #%02X%02X%02X' % (r(),r(),r())])
             if context['user'] in group.members.all():
                 context['haveTeam'] = True
                 break
