@@ -1,5 +1,5 @@
 {% load static %}
-<div class="container" xmlns:competition="http://www.w3.org/1999/xhtml">
+<div class="container" xmlns:competition="http://www.w3.org/1999/xhtml" >
     <div class="container-fluid text-center">
         <h1>COMPETITIONS</h1>
     </div>
@@ -71,10 +71,10 @@
                 <div class="modal-dialog " role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <div class="col">
+                            <div class="col-8">
                                 <h5 class="modal-title" id="exampleModalLabel">{{ compet.title }}</h5>
                             </div>
-                            <div class="col">
+                            <div class="col-4">
                                 <div class="row pb-1">
                                     {% if compet.is_competition_opened %}
                                         <span class="badge badge-success"
@@ -99,31 +99,26 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div class="col-xs-12 float-right">
-                                <div class="row">
-                                    <a href='{% url "competition:detail" compet.id %}' type="button"
-                                       class="btn btn-outline-primary">Go to competition page</a>
-                                </div>
-                            </div>
-                            <div class="col-xs-12">
+                            <div class="col">
 
-
-                                <div class="row">
+                                <div class="container row">
                                     {{ compet.description|slice:"0:240" }}...
                                 </div>
                                 <br>
+                                <div class="container row">
+                                    <h6>Date: {{ compet.data_start_competition|date:"SHORT_DATE_FORMAT" }} -
+                                        {{ compet.data_finish_competition|date:"SHORT_DATE_FORMAT" }}</h6>
+                                </div>
+                                <div class="container row">
+                                    <h6>Time: {{ compet.data_start_competition|time }}
+                                        - {{ compet.data_finish_competition|time }}</h6>
+                                </div>
                             </div>
-                            <div class="container row">
-                                <h6>Date: {{ compet.data_start_competition|date:"SHORT_DATE_FORMAT" }} -
-                                    {{ compet.data_finish_competition|date:"SHORT_DATE_FORMAT" }}</h6>
+                            <div class="modal-footer">
+                            <a href='{% url "competition:detail" compet.id %}' type="button"
+                                        class="btn btn-outline-primary">Go to competition page</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
-                            <div class="container row">
-                                <h6>Time: {{ compet.data_start_competition|time }}
-                                    - {{ compet.data_finish_competition|time }}</h6>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
