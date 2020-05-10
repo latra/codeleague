@@ -11,8 +11,8 @@
             <br>
             <div class="row pb-3">
                 {% for compet in competitions %}
-                    <div class="col-6 pb-3">
-                        <div class="card">
+                    <div class="col-6 pb-3 d-flex align-items-stretch">
+                        <div class="card"  style="width: 36rem;">
                             <div class="card-body">
                                 {% if compet.owner == user %}
                                     <a href="{% url 'competition:edit' compet.pk %}"
