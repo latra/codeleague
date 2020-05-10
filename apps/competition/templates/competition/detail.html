@@ -4,10 +4,17 @@
 
 {% block content %}
     <div class="jumbotron">
+<<<<<<< HEAD
 
         <a class="container">
             {% if competition.owner != user and competition.is_inscription_opened and not haveTeam %}
             <a href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!
+=======
+        
+        <div class="container">
+            {% if competition.owner != user and competition.is_inscription_opened and haveTeam == False%}
+            <a name="create_team" href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!
+>>>>>>> 1c58dc41f21391472438c9113418d34950040717
             </a>
             {% elif competition.owner == user%}
                 <div class="float-right pr-3">

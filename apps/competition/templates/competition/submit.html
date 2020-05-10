@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src='https://cdn.tiny.cloud/1/rjbonuebwo4n9gq3094x1whzzoxorlnmquk7rm8fsxtkdp2n/tinymce/5/tinymce.min.js' referrerpolicy="origin">
-  </script>
-  <script>
-    tinymce.init({
-      selector: '#mytextarea'
-    });
-  </script>
+    <script src='https://cdn.tiny.cloud/1/rjbonuebwo4n9gq3094x1whzzoxorlnmquk7rm8fsxtkdp2n/tinymce/5/tinymce.min.js'
+            referrerpolicy="origin">
+    </script>
+    <script>
+        tinymce.init({
+            selector: '#mytextarea'
+        });
+    </script>
 </head>
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
@@ -17,7 +18,7 @@
 
 {% block content %}
     <div class="jumbotron">
-        
+
         <div class="container">
             <h1>{{ team.name }} submition</h1>
             <h4>You are going to publish in {{ team.competition.title }}</h4>
@@ -31,36 +32,39 @@
 
                 <div class="form-group">
                     <label for="formGroupExampleInput">Github URL</label>
-                    <input type="url" class="form-control" id="giturl" name="githuburl" value={{team.submition.githuburl}}>
+                        <input name="githuburl" type="url" class="form-control" value={{ team.submition.githuburl }}>
+
                 </div>
                 <div class="row">
                     <div class="col-5">
                         <div class="form-group">
                             <label for="exampleFormControlFile1">Add files</label>
-                            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="files" multiple>
+                            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="files"
+                                   multiple>
                         </div>
                         <button name="button_publish" class="btn btn-warning" type="submit">Publish!</button>
                     </div>
                     <div class="col-7">
-                    
+
                         {% if  team.submition.files.all|length > 0 %}
-                        <h5 class="mt-0 mb-1">Actual published files:</h5>
-                        {% for file in team.submition.files.all %}
-                    <div type="row justify-content-md-center">
-                        <div class="row">
-                            <div class="col-6">{{file.title}}</div>
-                            <div class="form-group form-check col-1">
-                                <input type="checkbox" class="form-check-input" id="delete{{file.id}}" name="delete{{file.id}}">
-                                <label class="form-check-label" for="exampleCheck1">Delete</label>
-                            </div>  
-                        </div>    
-                    </div>
-                        {% endfor %}
+                            <h5 class="mt-0 mb-1">Actual published files:</h5>
+                            {% for file in team.submition.files.all %}
+                                <div type="row justify-content-md-center">
+                                    <div class="row">
+                                        <div class="col-6">{{ file.title }}</div>
+                                        <div class="form-group form-check col-1">
+                                            <input type="checkbox" class="form-check-input" id="delete{{ file.id }}"
+                                                   name="delete{{ file.id }}">
+                                            <label class="form-check-label" for="exampleCheck1">Delete</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
                         {% endif %}
                     </div>
                 </div>
             </form>
-            
+
         </div>
     </div>
 {% endblock %}
