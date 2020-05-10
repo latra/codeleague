@@ -21,3 +21,8 @@ Feature: List all teams in a competition
       | team1  |
       | team2  |
 
+  Scenario: Try to list teams of a competition but not logged in
+    Given I'm not logged in
+    When I want to view all the teams that participate in a competition
+    Then Need to login to have "teams" link available
+

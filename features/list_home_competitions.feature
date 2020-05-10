@@ -28,3 +28,8 @@ Feature: List competitions
       | Competition5 | Competition5 description | 2020-05-26               | 17:00:00                 | 2020-05-30                | 17:00:00                  | 2020-05-31               | 17:00:00                 | 2020-06-01                | 18:00:00                  |
       | Competition6 | Competition6 description | 2020-06-02               | 17:00:00                 | 2020-06-05                | 17:00:00                  | 2020-06-06               | 17:00:00                 | 2020-06-06                | 18:00:00                  |
     And The list contains 6 competitions
+
+  Scenario: Try to list 6 most recent to end competitions but not logged in
+    Given I'm not logged in
+    When I want to view 6most recent to end competitions
+    Then Need to login to have competitions at home page available

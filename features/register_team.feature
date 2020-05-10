@@ -20,4 +20,4 @@ Feature: Register Team
   Scenario: Try to register a team but not logged in
     Given I'm not logged in
     When I want to register a team
-    Then Need to login to have "competition/create/" link available???
+    Then Need to login to have "competition/id/1/create-team/" link available

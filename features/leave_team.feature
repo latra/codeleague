@@ -15,3 +15,8 @@ Feature: Leave Team
     Given I login as user "user2" with password "password"
     When I leave team "team1" at competition "Competition1"
     Then There are 0 teams at competition "Competition1"
+
+  Scenario: Try to leave a team but not logged in
+    Given I'm not logged in
+    When I want to leave a team
+    Then Need to login to have "leave" link available

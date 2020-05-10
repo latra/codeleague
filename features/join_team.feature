@@ -16,3 +16,8 @@ Feature: Join Team
     Given I login as user "user3" with password "password"
     When I join team "team1" at competition "Competition1"
     Then There are 2 members at team "team1" at competition "Competition1"
+
+  Scenario: Try to join a team of a competition but not logged in
+    Given I'm not logged in
+    When I want to join a team
+    Then Need to login to have "join" link available
