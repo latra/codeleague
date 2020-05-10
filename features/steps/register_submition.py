@@ -12,7 +12,6 @@ def step_impl(context, title):
     from apps.league.models import Competition
     comp = Competition.objects.get(title=title)
     context.browser.visit(context.get_url('competition:detail', pk=comp.id))
-    print(context.browser.html)
     context.browser.find_by_name('submit_resolution').first.click()
     assert context.browser.url == context.get_url('competition:submit-answer', pk=comp.id)
     for row in context.table:
@@ -20,22 +19,17 @@ def step_impl(context, title):
         github = row['github']
         form = context.browser.find_by_tag('form')
         print("FORM", form)
-        frame = form.switch_to.frame("mytextarea_ifr")
-        print("FRAME", frame)
-        text_area = form.find_element_by_id("mytextarea_ifr")
-        text_area.send_keys(desc)
-        github_field = form.find_element_by_name("githuburl")
-        github_field.type(github, slowly=True)
+        with context.browser.get_iframe("mytextarea_ifr") as text_area:
+            print("TEXT AREA", text_area)
+            text_desc = text_area.find_by_tag('p')
+            print("TEXT DESC", text_desc)
+        github_field = context.browser.find_by_name('githuburl')
+        print("GITHUB FIELD", github_field)
+        print("GITHUB FIELD", github_field.first)
         context.browser.find_by_name('button_publish').first.click()
 
 
-@step("there are {count:n} submissions")
-def step_impl(context, count):
-    """
-    :type count: str
-    :type context: behave.runner.Context
-    """
-    raise NotImplementedError(u'STEP: And there are 1 submissions')
+
 
 
 @when('I want to create a submission for a competition "{title}"')
@@ -47,3 +41,4 @@ def step_impl(context, title):
     from apps.league.models import Competition
     comp = Competition.objects.get(title=title)
     context.browser.visit(context.get_url('competition:submit-answer', pk=comp.pk))
+
