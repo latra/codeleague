@@ -79,6 +79,10 @@ POSTGRES_HOST=db
 POSTGRES_PORT=5432
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=password
+
+AWS_KEY=[Your AWS Key]
+AWS_SECRET=[Your AWS Secret Key]
+AWS_BUCKET=[Your AWS Bucket Name]
 ```
 
 ## Built and deployed with
