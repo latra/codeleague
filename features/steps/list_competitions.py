@@ -45,6 +45,7 @@ def step_impl(context, count):
     :type count: str
     :type context: behave.runner.Context
     """
+    print(context.browser.html)
     for i, row in enumerate(context.table):
         card = context.browser.find_by_css('div.card')
         card_title = card.find_by_css('h4.card-title')
