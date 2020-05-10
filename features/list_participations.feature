@@ -19,7 +19,7 @@ Feature: List user participations
     Given I login as user "user1" with password "password"
     When I view participations of user "user1"
     Then I'm at "accounts/u/2/participations/"
-    Then I'm viewing a list of all competitions I have participated
+    Then I'm viewing a list of all competitions "user1" has participated
       | title        |
       | Competition1 |
       | Competition2 |
