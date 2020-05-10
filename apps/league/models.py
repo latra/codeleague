@@ -41,7 +41,8 @@ class Competition(models.Model):
     data_finish_competition = models.DateTimeField()
     categories = models.ManyToManyField(Category, blank=True)
     files = models.ManyToManyField(Files, blank=True)
-    finalized = models.BooleanField(default = False)
+    finalized = models.BooleanField(default=False)
+
     def __str__(self):
         return f'{self.title}'
 
@@ -52,12 +53,10 @@ class Competition(models.Model):
         else:
             raise ValidationError("Dates are not correct.")
 
-
     def is_inscription_opened(self):
         if self.data_start_inscription <= timezone.now() < self.data_finish_inscription:
             return True
         return False
-
 
     def is_competition_opened(self):
         if self.data_start_competition <= timezone.now() < self.data_finish_competition:
@@ -68,7 +67,6 @@ class Competition(models.Model):
         if timezone.now() > self.data_finish_inscription:
             return True
         return False
-
 
 
 class Submit(models.Model):
@@ -88,6 +86,7 @@ class Team(models.Model):
     members = models.ManyToManyField(LeagueUser, related_name='participants')
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, null=True)
     submition = models.ForeignKey(Submit, on_delete=models.CASCADE, null=True, blank=True)
+
     def __str__(self):
         return f'Team {self.name} in {self.competition} : {self.members.all()}'
 
@@ -97,6 +96,7 @@ class Ranking(models.Model):
 
     def __str__(self):
         return f'Ranking: {self.score}'
+
     @classmethod
     def create(cls, score):
         ranking = cls(score=score)
