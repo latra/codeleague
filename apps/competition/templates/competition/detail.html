@@ -4,7 +4,6 @@
 
 {% block content %}
     <div class="jumbotron">
-        
         <div class="container">
             {% if competition.owner != user and competition.is_inscription_opened and haveTeam == False%}
             <a href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!</a>
@@ -16,7 +15,7 @@
                          src="{% static 'imgs/icons/edit.png' %}">Edit
                 </a>
                 </div>
-                {% if competition.is_competition_ended %}
+                {% if competition.is_competition_ended and competition.finalized == False %}
                     <div class="float-right pr-3">
                     <a href="{% url 'competition:valorate-submitions' competition.pk %}"
                     class="btn btn-outline-primary float-right btn-lg">
@@ -27,6 +26,7 @@
                 {% endif %}
                 
             {% endif %}
+
             <div class="row">
                 <div class="col-10">
                     <h1>{{ competition.title }}</h1>

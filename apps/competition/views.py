@@ -272,6 +272,12 @@ class RateAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.Cre
     def get_context_data(self, **kwargs):
         context = {}
         context['groups'] = Team.objects.filter(competition=self.kwargs['pk'], submition__isnull=False)
+        context['files'] =[]
+        for team in context['groups']:
+            for submit_file in team.submition.files.all():  
+                context['files'].append((team.id, submit_file.title, s3_client.generate_presigned_url('get_object', Params={'Bucket': os.getenv('AWS_BUCKET'), 'Key':submit_file.file_bucket}, ExpiresIn=100)))
+                
+        
         return super().get_context_data(**context)
     def form_valid(self, form):
         print(self.request.POST)
