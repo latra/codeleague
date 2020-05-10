@@ -30,6 +30,14 @@ Feature: List all competitions
       | Competition6 | Competition6 description | 2020-06-02               | 17:00:00                 | 2020-06-05                | 17:00:00                  | 2020-06-06               | 17:00:00                 | 2020-06-06                | 18:00:00                  |
       | Competition7 | Competition7 description | 2020-06-12               | 17:00:00                 | 2020-06-20                | 17:00:00                  | 2020-06-21               | 17:00:00                 | 2020-06-24                | 18:00:00                  |
     And The list contains 7 competitions
+      | title        |
+      | Competition1 |
+      | Competition2 |
+      | Competition3 |
+      | Competition4 |
+      | Competition5 |
+      | Competition6 |
+      | Competition7 |
 
   Scenario: Try to list all competitions but not logged in
     Given I'm not logged in
