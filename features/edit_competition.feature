@@ -12,21 +12,21 @@ Feature: Edit competition
 
   Scenario: Edit owned competition registry description
     Given I login as user "user1" with password "password"
-    Then I'm at "competition/id/1/edit/"
     When I edit the competition with name "Competition1"
       | description                 |
       | description of Competition1 |
-    Then I'm viewing the details page for this competition for "user1"
-      | title        | description                 |
-      | Competition1 | description of Competition1 |
+    Then I'm at "competition/id/1/"
+    Then I view all the competition information of "Competition1"
+      | title        | description              |
+      | Competition1 | Competition1 description |
     And there are 1 competitions
 
   Scenario: Try to edit competition but not logged in
     Given I'm not logged in
-    When I want to edit a competition
+    When I want to edit the competition with name "Competition1"
     Then Need to login to have "competition/id/1/edit/" link available
 
   Scenario: Try to edit competition but not the owner no edit button
     Given I login as user "user2" with password "password"
-    When I view the details for competition "Competition1"
-    Then There is no "competition/id/1/edit/" link available
+    When I want to edit the competition with name "Competition1"
+    Then There is 403 Forbidden

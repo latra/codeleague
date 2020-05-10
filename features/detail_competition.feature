@@ -20,6 +20,6 @@ Feature: Detail competition
       | Competition1 | Competition1 description |
 
   Scenario: Try to see the information of a competition but not logged in
-  Given I'm not logged in
-  When I want to view the competition details
-  Then Need to login to have "competition/id/1/" link available
+    Given I'm not logged in
+    When I visit the competition with title "Competition1"
+    Then Redirect to login to have "competition/id/1/" link available

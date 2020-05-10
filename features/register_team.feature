@@ -15,7 +15,7 @@ Feature: Register Team
     Given I login as user "user2" with password "password"
     When I register team "team1" at competition "Competition1"
     Then I'm at "competition/id/1/create-team/"
-    Then There are 1 teams
+    Then There are 1 teams at competition "Competition1"
 
   Scenario: Try to register a team but not logged in
     Given I'm not logged in

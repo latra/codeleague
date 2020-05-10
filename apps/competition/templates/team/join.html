@@ -5,7 +5,7 @@
             {% for group in groups %}
             <div class="row pb-3">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card" name="card_team_{{ group.name }}">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">                            
@@ -14,7 +14,7 @@
                                         [My team]
                                     {% endif %}
                                     {{ group.name }}</h4>
-                                    <h6>{{ group.members.all|length }}/4 members</h6> 
+                                    <h6 name="members"">{{ group.members.all|length }}/4 members</h6>
  
                                 </div>
                             </div>
@@ -28,7 +28,7 @@
                             {% endif %}
                             {% if user in group.members.all and competition.is_inscription_opened %}
                             <form method="POST">{% csrf_token%}
-                                <a href="#" class="btn btn-primary float-right" data-toggle="modal"
+                                <a href="#" class="btn btn-primary float-right" data-toggle="modal" name="leave_group"
                            data-target="#modal{{ group.id }}">Leave Group</a>
                             </form>
                             <!-- Modal competition -->
@@ -49,7 +49,7 @@
                                                 <input type="hidden" name="action" value="leave">
 
                                                 <input type="hidden" id="teamId" value={{group.id}} name="teamId">
-                                                <input class="btn btn-warning float-left" type="submit" value="Confirm">
+                                                <input class="btn btn-warning float-left" type="submit" name="confirm_leave" value="Confirm">
                                             </form>
                                         </div>
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

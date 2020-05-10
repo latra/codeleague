@@ -18,5 +18,5 @@ Feature: List all categories
 
   Scenario: Try to list all categories but not logged in
     Given I'm not logged in
-    When I want to view all categories
-    Then Need to login to have "category" link available
+    When I list categories
+    Then Need to login to have "category/" link available

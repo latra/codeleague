@@ -7,9 +7,13 @@
         <div class="jumbotron p">
             {% if user.is_authenticated %}
                 <h1>Hey {{ duser.username }}! You have participated on:</h1>
+                <ul>
+
                 {% for competition in competitions %}
-                    {{competition.title}}<br>
+                    <li name="{{ competition.title }}">{{competition.title}}</li>
                 {% endfor %}
+                </ul>
+
             {% else %}
                 <p>You are not logged in. Log in to see your profile</p>
             {% endif %}
