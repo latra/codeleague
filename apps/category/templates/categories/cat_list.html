@@ -2,19 +2,19 @@
 
 {% for category in categories %}
     <div class="col-6 pb-3">
-        <div class="card">
+        <div class="card" name="{{ category.name }}">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <a class="btn btn-primary float-right " data-toggle="collapse"
+                        <a class="btn btn-primary float-right " data-toggle="collapse" name="see_competitions"
                            href="#collapse{{ category.id }}" role="button" aria-expanded="false"
                            aria-controls="collapse{{ category.id }}">
                             See Competitions</a>
-                        <h4 class="card-title">{{ category.name }}</h4>
+                        <h4 name="cat_name" class="card-title">{{ category.name }}</h4>
 
                     </div>
                 </div>
-                <p class="card-text">
+                <p name="cat_desc" class="card-text">
                     {{ category.description|slice:"0:200" }}...
                 </p>
                 <div class="collapse multi-collapse" id="collapse{{ category.id }}">
@@ -23,7 +23,7 @@
                             {% with cid=category.id %}
                                 {% for k in competitions|hash:category.id %}
                                     <li><a href="{% url 'competition:detail' k.id %}"
-                                           class="text-secondary"> {{ k }}</a></li>
+                                           class="text-secondary" name="{{ category.name }}_{{ k.title   }}"> {{ k }}</a></li>
                                 {% endfor %}
                             {% endwith %}
                         </ul>

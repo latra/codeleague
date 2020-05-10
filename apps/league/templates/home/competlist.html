@@ -5,9 +5,9 @@
     </div>
     <br>
     <div class="row pb-3">
-        {% for compet in competitions %}
+        {% for compet in competitions|slice:":6" %}
             <div class="col-6 pb-3">
-                <div class="card">
+                <div class="card" name="card_{{ compet.title }}">
                     <div class="card-body">
                         {% if compet.owner == user %}
                             <a href="{% url 'competition:edit' compet.pk %}"

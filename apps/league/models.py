@@ -4,6 +4,8 @@ from django.db import models
 # Create your models here.
 from django.db.models.functions import datetime
 from django.utils import timezone
+from django.conf import settings
+from django.utils.timezone import make_aware, get_current_timezone
 
 from apps.account.models import LeagueUser
 
@@ -23,7 +25,6 @@ class Files(models.Model):
     @classmethod
     def create(cls, title, file_bucket):
         file_upload = cls(title=title, file_bucket=file_bucket)
-        # do something with the book
         return file_upload
 
     def __str__(self):
@@ -34,13 +35,13 @@ class Competition(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     owner = models.ForeignKey(LeagueUser, on_delete=models.CASCADE, null=True)
-    data_start_inscription = models.DateTimeField(default=datetime.timezone.datetime.now)
+    data_start_inscription = models.DateTimeField(default=timezone.now)
     data_finish_inscription = models.DateTimeField()
     data_start_competition = models.DateTimeField()
     data_finish_competition = models.DateTimeField()
     categories = models.ManyToManyField(Category, blank=True)
     files = models.ManyToManyField(Files, blank=True)
-
+    finalized = models.BooleanField(default = False)
     def __str__(self):
         return f'{self.title}'
 
@@ -63,6 +64,12 @@ class Competition(models.Model):
             return True
         return False
 
+    def is_competition_ended(self):
+        if timezone.now() > self.data_finish_inscription:
+            return True
+        return False
+
+
 
 class Submit(models.Model):
     description = models.TextField()
@@ -80,8 +87,7 @@ class Team(models.Model):
     ranking = models.ForeignKey('Ranking', on_delete=models.CASCADE, null=True)
     members = models.ManyToManyField(LeagueUser, related_name='participants')
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, null=True)
-    submition = models.ForeignKey(Submit, on_delete=models.CASCADE, null=True)
-
+    submition = models.ForeignKey(Submit, on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return f'Team {self.name} in {self.competition} : {self.members.all()}'
 
@@ -91,3 +97,7 @@ class Ranking(models.Model):
 
     def __str__(self):
         return f'Ranking: {self.score}'
+    @classmethod
+    def create(cls, score):
+        ranking = cls(score=score)
+        return ranking

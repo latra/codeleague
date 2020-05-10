@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Sign Up{% endblock %}
+{% block title %}{{competition.title}}{% endblock %}
 
 {% block content %}
     <div class="jumbotron">
-        
         <div class="container">
             {% if competition.owner != user and competition.is_inscription_opened and haveTeam == False%}
-            <a href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!
+            <a name="create_team" href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!
             </a>
             {% elif competition.owner == user%}
                 <div class="float-right pr-3">
@@ -17,7 +16,22 @@
                          src="{% static 'imgs/icons/edit.png' %}">Edit
                 </a>
                 </div>
+                {% if competition.is_competition_ended and competition.finalized == False %}
+                    <div class="float-right pr-3">
+                    <a href="{% url 'competition:valorate-submitions' competition.pk %}"
+                    class="btn btn-outline-primary float-right btn-lg">
+                        <img width="20px"
+                            src="{% static 'imgs/icons/edit.png' %}">Valorate
+                    </a>
+                    </div>                
+                {% endif %}
+                {% if not competition.is_competition_open %}
+                <div class="float-right pr-3">
+                <a name="delete_competition" href="{% url 'competition:delete' competition.pk %}" class="btn btn-danger float-right">Delete Competition</a>
+                </div>
+                {% endif %}
             {% endif %}
+
             <div class="row">
                 <div class="col-10">
                     <h1>{{ competition.title }}</h1>
@@ -26,7 +40,7 @@
                 <div class="col-2">
                     {% if haveTeam and competition.is_competition_opened %}
                     <div class="float-left container">
-                    <a href='{% url "competition:submit-answer" competition.id %}' type="button"
+                    <a href='{% url "competition:submit-answer" competition.id %}' name="submit_resolution" type="button"
                                        class="btn btn-primary">Publish solution</a>
                         </div>
                     {% endif %}
@@ -54,7 +68,7 @@
                 </div>
                 <div class="col-8">{% include "team/join.html" %}</div>
             </div>
-            
+
         </div>
     </div>
 {% endblock %}
