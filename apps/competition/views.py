@@ -101,7 +101,7 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return reverse_lazy('competition:detail', kwargs={'pk': kwargs.get('pk')})
 
 
-class CompetitionDelete(LoginRequiredMixin, generic.DeleteView):
+class CompetitionDelete(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Competition
     template_name = 'competition/delete.html'
     success_url = reverse_lazy('competition:list')
@@ -115,7 +115,7 @@ class CompetitionDelete(LoginRequiredMixin, generic.DeleteView):
 
     def test_func(self):
         competition = Competition.objects.filter(id=self.kwargs.get(self.pk_url_kwarg))[0]
-        if competition.owner != self.request.user:
+        if competition.owner != self.request.user or competition.is_competition_opened():
             return False
         return True
 
@@ -126,8 +126,9 @@ class CompetitionDelete(LoginRequiredMixin, generic.DeleteView):
                 action = self.request.POST.get('action')
                 if action == 'delete':
                     competition.delete(self.request.user.pk)
-                    return http.HttpResponseRedirect(self.get_success_url())
-                return http.HttpResponseForbidden()
+
+                return http.HttpResponseRedirect(self.get_success_url())
+
 
 
 class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateView):
