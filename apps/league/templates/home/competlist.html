@@ -1,13 +1,13 @@
 {% load static %}
-<div class="container" xmlns:competition="http://www.w3.org/1999/xhtml">
+<div class="container" xmlns:competition="http://www.w3.org/1999/xhtml" >
     <div class="container-fluid text-center">
         <h1>COMPETITIONS</h1>
     </div>
     <br>
-    <div class="row pb-3">
+    <div class="row pb-3 ">
         {% for compet in competitions|slice:":6" %}
-            <div class="col-6 pb-3">
-                <div class="card" name="card_{{ compet.title }}">
+            <div class="col-6 pb-3 d-flex align-items-stretch">
+                <div class="card h-200" style="width: 36rem;" name="card_{{ compet.title }}">
                     <div class="card-body">
                         {% if compet.owner == user %}
                             <a href="{% url 'competition:edit' compet.pk %}"
@@ -59,7 +59,7 @@
 
                             <div class="col-3">
                                 <a href="#" class="btn badge-pill btn-primary float-right" data-toggle="modal"
-                                   data-target="#modal{{ compet.id }}">+ info</a>
+                                   data-target="#modal{{ compet.id }}">More info</a>
                             </div>
                         </div>
                     </div>
@@ -70,11 +70,12 @@
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog " role="document">
                     <div class="modal-content">
+
                                 <div class="modal-header">
-                                    <div class="col">
+                                    <div class="col-8">
                                         <h5 class="modal-title" id="exampleModalLabel">{{ compet.title }}</h5>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-4   ">
                                         <div class="row pb-1">
                                             {% if compet.is_competition_opened %}
                                                 <span class="badge badge-success"
@@ -102,13 +103,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="col-xs-12 float-right">
-                                        <div class="row pr-2">
-                                            <a href='{% url "competition:detail" compet.id %}' type="button"
-                                               class="btn btn-outline-primary">Go to competition page</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12">
+                                    <div class="col-12">
                                         <div class="row">
                                             <h6><p class="font-weight-bold d-inline">Owner:</p> <a href="{% url "account:user_detail" compet.owner.pk %}">{{ compet.owner }}</a></h6>
                                         </div>
@@ -127,7 +122,11 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <a href='{% url "competition:detail" compet.id %}' type="button"
+                                                    class="btn btn-outline-primary ">Go to competition page</a>
+                                        <div class="float-right">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
                                 </div>
                             </div>
                 </div>
