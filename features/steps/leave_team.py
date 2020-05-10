@@ -35,3 +35,15 @@ def step_impl(context, cont, title):
     for team in teams:
         print(team.members)
     assert len(teams.all()) == 0
+
+
+@when('I want to leave at competition "{title}"')
+def step_impl(context, title):
+    """
+    :type team_name: str
+    :type title: str
+    :type context: behave.runner.Context
+    """
+    from apps.league.models import Team, Competition
+    comp = Competition.objects.get(title=title)
+    context.browser.visit(context.get_url('competition:detail', pk=comp.pk))

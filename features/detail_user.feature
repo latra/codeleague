@@ -14,5 +14,5 @@ Feature: Detail user
 
   Scenario: Try to see our profile information but not logged in
     Given I'm not logged in
-    When I want to view my profile details
+    When I visit profile of "user"
     Then Need to login to have "accounts/u/1/" link available

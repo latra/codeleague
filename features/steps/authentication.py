@@ -31,7 +31,7 @@ def step_impl(context, username, password):
 
 @given('I\'m not logged in')
 def step_impl(context):
-
+    context.browser.visit(context.get_url('account:logout'))
     assert context.browser.url == context.get_url('league:home')
 
 
@@ -41,6 +41,28 @@ def step_impl(context, path):
     :type path: str
     :type context: behave.runner.Context
     """
+    print(context.browser.url)
     uri = context.get_url('account:login') + f'?next=/{path}'
+    print(uri)
     assert context.browser.url == uri
 
+
+@then('Redirect to login to have "{path}" link available')
+def step_impl(context, path):
+    """
+    :type path: str
+    :type context: behave.runner.Context
+    """
+    print(context.browser.url)
+    uri = context.get_url('account:login') + f'?redirect_to=/{path}'
+    print(uri)
+    assert context.browser.url == uri
+
+
+@then('There is 403 Forbidden')
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    print(context.browser.title)
+    assert context.browser.title == '403 Forbidden'

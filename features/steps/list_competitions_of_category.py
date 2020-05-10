@@ -14,6 +14,14 @@ def step_impl(context, name):
     from time import sleep
     sleep(1)
 
+@when('I want to list all competitions of category "{name}"')
+def step_impl(context, name):
+    """
+    :type name: str
+    :type context: behave.runner.Context
+    """
+    context.browser.visit(context.get_url('category:listofcategories'))
+
 
 @then('I\'m viewing a list containing all the competitions from category "{name}"')
 def step_impl(context, name):

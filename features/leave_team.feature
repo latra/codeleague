@@ -18,5 +18,5 @@ Feature: Leave Team
 
   Scenario: Try to leave a team but not logged in
     Given I'm not logged in
-    When I want to leave a team
-    Then Need to login to have "leave" link available
+    When I want to leave at competition "Competition1"
+    Then Redirect to login to have "competition/id/1/" link available
