@@ -7,7 +7,7 @@
     <div class="row pb-3 ">
         {% for compet in competitions|slice:":6" %}
             <div class="col-6 pb-3 d-flex align-items-stretch">
-                <div class="card h-200" style="width: 36rem;" name="card_{{ compet.title }}">
+                <div class="card h-200" styleg="width: 36rem;" name="card_{{ compet.title }}">
                     <div class="card-body">
                         {% if compet.owner == user %}
                             <a href="{% url 'competition:edit' compet.pk %}"
