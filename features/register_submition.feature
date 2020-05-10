@@ -13,7 +13,9 @@ Feature: Register submission
 
   Scenario: Register submission
     Given I login as user "user2" with password "password"
-    When I register a submission
+    When I register a submission in competition "Competition1"
+      | description      | github                               |
+      | Some description | https://github.com/Oriolac/codeleague/t |
     Then I'm at "competition/id/1/submit-answer/"
     And there are 1 submissions
 

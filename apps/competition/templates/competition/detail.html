@@ -26,7 +26,7 @@
                 <div class="col-2">
                     {% if haveTeam and competition.is_competition_opened %}
                     <div class="float-left container">
-                    <a href='{% url "competition:submit-answer" competition.id %}' type="button"
+                    <a href='{% url "competition:submit-answer" competition.id %}' name="submit_resolution" type="button"
                                        class="btn btn-primary">Publish solution</a>
                         </div>
                     {% endif %}
