@@ -4,12 +4,16 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.views import generic
 from django.shortcuts import render
-from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm, TeamLeaveForm, PublishAnswerForm
+from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm, TeamLeaveForm, \
+    PublishAnswerForm
 from apps.league.models import Team, Competition, Category, Files, Ranking
+
 import os, boto3, datetime
 
-s3 = boto3.resource('s3', aws_access_key_id=str(os.getenv('AWS_KEY')), aws_secret_access_key=str(os.getenv('AWS_SECRET')))
-s3_client = boto3.client('s3', aws_access_key_id=str(os.getenv('AWS_KEY')), aws_secret_access_key=str(os.getenv('AWS_SECRET')))
+s3 = boto3.resource('s3', aws_access_key_id=str(os.getenv('AWS_KEY')),
+                    aws_secret_access_key=str(os.getenv('AWS_SECRET')))
+s3_client = boto3.client('s3', aws_access_key_id=str(os.getenv('AWS_KEY')),
+                         aws_secret_access_key=str(os.getenv('AWS_SECRET')))
 
 
 class ListCompetition(LoginRequiredMixin, generic.ListView):
@@ -39,8 +43,12 @@ class CreateCompetitionView(LoginRequiredMixin, generic.CreateView):
         competition.save()
         for file_name in files:
             datecreated = datetime.datetime.now()
-            s3.Bucket(os.getenv('AWS_BUCKET')).put_object(Key= "competition/" + str(competition.id) + "_"+ str(datecreated)  + "_" +  str(file_name), Body=file_name)
-            file_data = Files.create(str(file_name),"competition/" + str(competition.id) + "_"+ str(datecreated)  + "_" +  str(file_name))
+            s3.Bucket(os.getenv('AWS_BUCKET')).put_object(
+                Key="competition/" + str(competition.id) + "_" + str(datecreated) + "_" + str(file_name),
+                Body=file_name)
+            file_data = Files.create(str(file_name),
+                                     "competition/" + str(competition.id) + "_" + str(datecreated) + "_" + str(
+                                         file_name))
             file_data.save()
             competition.files.add(file_data)
         competition.save()
@@ -60,6 +68,7 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         competition = Competition.objects.get(pk=self.kwargs['pk'])
         return competition.owner.pk == self.request.user.pk
+
     def form_valid(self, form):
         competition = form.save()
         delete = False
@@ -69,17 +78,21 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
                 res.append({'Key': update_file.file_bucket})
                 competition.files.remove(update_file)
                 update_file.delete()
-                delete=True
+                delete = True
             else:
-                update_file.title = self.request.POST.get('title'+str(update_file.id))
+                update_file.title = self.request.POST.get('title' + str(update_file.id))
                 update_file.save()
         if delete: s3.Bucket(os.getenv('AWS_BUCKET')).delete_objects(Delete={'Objects': res})
         competition.save()
         files = self.request.FILES.getlist('files')
         for file_name in files:
             datecreated = datetime.datetime.now()
-            s3.Bucket(os.getenv('AWS_BUCKET')).put_object(Key="competition/" + str(competition.id) + "_"+ str(datecreated)  + "_" +  str(file_name), Body=file_name)
-            file_data = Files.create(str(file_name),"competition/" + str(competition.id) + "_"+ str(datecreated)  + "_" +  str(file_name))
+            s3.Bucket(os.getenv('AWS_BUCKET')).put_object(
+                Key="competition/" + str(competition.id) + "_" + str(datecreated) + "_" + str(file_name),
+                Body=file_name)
+            file_data = Files.create(str(file_name),
+                                     "competition/" + str(competition.id) + "_" + str(datecreated) + "_" + str(
+                                         file_name))
             file_data.save()
             competition.files.add(file_data)
         competition.save()
@@ -87,6 +100,35 @@ class CompetitionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('competition:detail', kwargs={'pk': kwargs.get('pk')})
+
+
+class CompetitionDelete(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Competition
+    template_name = 'competition/delete.html'
+    success_url = reverse_lazy('competition:list')
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        return super().get_context_data(**context)
+
+    def get_success_url(self):
+        return reverse_lazy('competition:list')
+
+    def test_func(self):
+        competition = Competition.objects.filter(id=self.kwargs.get(self.pk_url_kwarg))[0]
+        if competition.owner != self.request.user or competition.is_competition_opened():
+            return False
+        return True
+
+    def form_valid(self, form):
+        if self.request.method == 'POST':
+            competition = Competition.objects.filter(id=self.kwargs['pk'])[0]
+            if competition.is_competition_opened() is False and competition.owner == self.request.user:
+                action = self.request.POST.get('action')
+                if action == 'delete':
+                    competition.delete(self.request.user.pk)
+
+                return http.HttpResponseRedirect(self.get_success_url())
 
 
 class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateView):
@@ -113,8 +155,9 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         files = competition.files.all()
         context['files'] = []
         for competition_file in files:
-            context['files'].append((competition_file.title, s3_client.generate_presigned_url('get_object', Params={'Bucket': os.getenv('AWS_BUCKET'), 'Key':competition_file.file_bucket}, ExpiresIn=100)))
-        
+
+            context['files'].append((competition_file.title, s3_client.generate_presigned_url('get_object', Params={
+                'Bucket': os.getenv('AWS_BUCKET'), 'Key': competition_file.file_bucket}, ExpiresIn=100)))
         return super().get_context_data(**context)
 
     def form_valid(self, form):
@@ -183,7 +226,6 @@ class SearchCompetitions(LoginRequiredMixin, generic.TemplateView):
         return context
 
 
-
 class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     login_url = reverse_lazy('account:login')
     redirect_field_name = 'redirect_to'
@@ -193,6 +235,7 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
     form_class = PublishAnswerForm
 
     queryset = Competition.objects.all()
+
     def get_team(self):
         competition = Competition.objects.get(id=self.kwargs['pk'])
         competition_groups = Team.objects.filter(competition=competition)
@@ -201,6 +244,7 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
             if self.request.user in group.members.all():
                 return group
         return None
+
     def get_context_data(self, **kwargs):
 
         context = {}
@@ -208,7 +252,6 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
         return super().get_context_data(**context)
 
     def test_func(self):
-
 
         competition = Competition.objects.get(id=self.kwargs['pk'])
 
@@ -225,7 +268,7 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
                     res.append({'Key': update_file.file_bucket})
                     team.submition.files.remove(update_file)
                     update_file.delete()
-                    delete=True
+                    delete = True
                 else:
                     submit.files.add(update_file)
         if delete: s3.Bucket(os.getenv('AWS_BUCKET')).delete_objects(Delete={'Objects': res})
@@ -236,13 +279,14 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
         files = self.request.FILES.getlist('files')
         for file_name in files:
             datecreated = datetime.datetime.now()
-            s3.Bucket(os.getenv('AWS_BUCKET')).put_object(Key="submit/" + str(submit.id) + "_"+ str(datecreated)  + "_" +  str(file_name), Body=file_name)
-            file_data = Files.create(str(file_name),"submit/" + str(submit.id) + "_"+ str(datecreated)  + "_" +  str(file_name))
+            s3.Bucket(os.getenv('AWS_BUCKET')).put_object(
+                Key="submit/" + str(submit.id) + "_" + str(datecreated) + "_" + str(file_name), Body=file_name)
+            file_data = Files.create(str(file_name),
+                                     "submit/" + str(submit.id) + "_" + str(datecreated) + "_" + str(file_name))
             file_data.save()
             submit.files.add(file_data)
         submit.save()
         return http.HttpResponseRedirect(self.get_success_url())
-
 
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
@@ -263,24 +307,31 @@ class CompetitionFinish(LoginRequiredMixin, UserPassesTestMixin, generic.Templat
         context.update(kwargs)
         return super().get_context_data(**context)
 
+
 class RateAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     context_object_name = 'competition'
     template_name = 'competition/rate.html'
     queryset = Competition.objects.all()
     fields = []
+
     def test_func(self):
         competition = Competition.objects.get(pk=self.kwargs['pk'])
-        return competition.owner.pk == self.request.user.pk and not competition.finalized 
+        return competition.owner.pk == self.request.user.pk and not competition.finalized
+
     def get_context_data(self, **kwargs):
         context = {}
         context['groups'] = Team.objects.filter(competition=self.kwargs['pk'], submition__isnull=False)
-        context['files'] =[]
+        context['files'] = []
         for team in context['groups']:
-            for submit_file in team.submition.files.all():  
-                context['files'].append((team.id, submit_file.title, s3_client.generate_presigned_url('get_object', Params={'Bucket': os.getenv('AWS_BUCKET'), 'Key':submit_file.file_bucket}, ExpiresIn=100)))
-                
-        
+            for submit_file in team.submition.files.all():
+                context['files'].append((team.id, submit_file.title, s3_client.generate_presigned_url('get_object',
+                                                                                                      Params={
+                                                                                                          'Bucket': os.getenv(
+                                                                                                              'AWS_BUCKET'),
+                                                                                                          'Key': submit_file.file_bucket},
+                                                                                                      ExpiresIn=100)))
         return super().get_context_data(**context)
+
     def form_valid(self, form):
         print(self.request.POST)
         competition = Competition.objects.get(pk=self.kwargs['pk'])
@@ -293,5 +344,6 @@ class RateAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.Cre
         competition.finalized = True
         competition.save()
         return http.HttpResponseRedirect(self.get_success_url())
+
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})

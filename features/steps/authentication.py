@@ -64,5 +64,6 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
+    print(context.browser.url)
     print(context.browser.title)
     assert context.browser.title == '403 Forbidden'
