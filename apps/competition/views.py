@@ -292,6 +292,7 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
 
 
+
 class CompetitionFinish(LoginRequiredMixin, UserPassesTestMixin, generic.TemplateView):
     login_url = reverse_lazy('account:login')
     template_name = 'team/list.html'
