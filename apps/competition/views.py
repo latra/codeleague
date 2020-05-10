@@ -144,16 +144,18 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
     def get_context_data(self, **kwargs):
         context = {}
         context['user'] = self.request.user
-        context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg))
+        context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg)).order_by('ranking')
         context['haveTeam'] = False
         for group in context['groups']:
             if context['user'] in group.members.all():
                 context['haveTeam'] = True
                 break
         context.update(kwargs)
-        files = Competition.objects.filter(id=self.kwargs.get(self.pk_url_kwarg))[0].files.all()
+        competition = Competition.objects.filter(id=self.kwargs.get(self.pk_url_kwarg))[0]
+        files = competition.files.all()
         context['files'] = []
         for competition_file in files:
+
             context['files'].append((competition_file.title, s3_client.generate_presigned_url('get_object', Params={
                 'Bucket': os.getenv('AWS_BUCKET'), 'Key': competition_file.file_bucket}, ExpiresIn=100)))
         return super().get_context_data(**context)
@@ -288,6 +290,7 @@ class PublishAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.
 
     def get_success_url(self):
         return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
+
 
 
 class CompetitionFinish(LoginRequiredMixin, UserPassesTestMixin, generic.TemplateView):
