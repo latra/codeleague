@@ -34,7 +34,7 @@ def step_impl(context, cont, title):
     print(teams)
     for team in teams:
         print(team.members)
-    assert len(teams.all()) == 0
+    assert len(teams.all()) == cont
 
 
 @when('I want to leave at competition "{title}"')
