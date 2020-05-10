@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        {% if competition.owner == user and competition.is_competition_opened is False %}
+        <!-- Modal competition -->
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Are you sure you want to delete the competition?</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xs-12 float-right">
+                        <form method="POST">
+                            {% csrf_token%}
+                            <input type="hidden" name="action" value="delete">
+                            <input class="btn btn-warning float-left" type="submit" value="Confirm">
+                        </form>
+                    </div>
+                    <a href="{% url 'competition:list' %}"  type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</a>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
