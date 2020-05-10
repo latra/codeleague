@@ -63,7 +63,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% elif competition.finalized %}
+                                    {% elif competition.finalized and group.ranking %}
                                         {% if foo_num == 1 %}
                                         <img src="/static/imgs/icons/Oro.png" alt="First place"width="100px" class="rounded float-right"  >
                                         {% elif foo_num == 2%}

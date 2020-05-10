@@ -6,9 +6,10 @@
 {% load static %}
 {% block title %}{{competition.title}}{% endblock %}
 {% block content %}
+{{data}}
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-    var a = {{data|safe}};
+    var a = {{ data|safe }};
 
     google.load('visualization', '1.0', {'packages':['corechart']});
     google.setOnLoadCallback(drawChart);

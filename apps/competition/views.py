@@ -149,8 +149,9 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         context['user'] = self.request.user
         context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg)).order_by('ranking')
         context['haveTeam'] = False
-        for group in context['groups']:
-            if group.submition and len(context['data'] < 10):
+        for group in Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg)).order_by('ranking'):
+            print(group)
+            if group.submition and len(context['data']) < 10:
                 context['data'].append([group.name, int(group.ranking.score), 'color: #%02X%02X%02X' % (r(),r(),r())])
             if context['user'] in group.members.all():
                 context['haveTeam'] = True
@@ -341,12 +342,16 @@ class RateAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.Cre
     def form_valid(self, form):
         print(self.request.POST)
         competition = Competition.objects.get(pk=self.kwargs['pk'])
-        teams = Team.objects.filter(competition=competition, submition__isnull=False)
+        teams = Team.objects.filter(competition=competition)
         for team in teams:
-            team.ranking = Ranking.create(self.request.POST.get("puntuation" + str(team.id)))
-            team.ranking.save()
-            print(team.ranking)
-            team.save()
+            if team.submition: 
+                team.ranking = Ranking.create(self.request.POST.get("puntuation" + str(team.id)))
+                team.ranking.save()
+                print(team.ranking)
+                team.save()
+            else:
+                team.ranking = None
+                team.save()
         competition.finalized = True
         competition.save()
         return http.HttpResponseRedirect(self.get_success_url())
