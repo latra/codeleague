@@ -84,9 +84,12 @@
                                             {% if compet.is_competition_opened %}
                                                 <span class="badge badge-success"
                                                       style="background-color: #74DA47; border-color: #74DA47; color: #000">In progress</span>
+                                            {% elif compet.is_inscription_opened %}
+                                                <span class="badge badge-warning"
+                                                      style="background-color: #dacb47; border-color: #dacb47; color: #000">Inscriptions</span>
                                             {% else %}
                                                 <span class="badge badge-danger"
-                                                      style="background-color: #EF3B3B; border-color: #EF3B3B; color: #000">Finalized</span>
+                                                      style="background-color: #EF3B3B; border-color: #EF3B3B; color: #000">Closed</span>
                                             {% endif %}
                                         </div>
                                         <div class="row">
@@ -105,25 +108,31 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="col-xs-12 float-right">
-                                        <div class="row">
+                                        <div class="row pr-2">
                                             <a href='{% url "competition:detail" compet.id %}' type="button"
                                                class="btn btn-outline-primary">Go to competition page</a>
                                         </div>
                                     </div>
                                     <div class="col-xs-12">
-
-
                                         <div class="row">
-                                            {{ compet.description|slice:"0:240" }}...
+                                            <h6><p class="font-weight-bold d-inline">Owner:</p> <a
+                                                    href="{% url "account:user_detail" compet.owner.pk %}">{{ compet.owner }}</a>
+                                            </h6>
+                                        </div>
+                                        <div class="row">
+                                            <p class="font-weight-bold d-inline">Description: </p>
+                                            <p class="d-inline"> {{ compet.description|slice:"0:240" }}...</p>
                                         </div>
                                         <br>
                                     </div>
                                     <div class="container row">
-                                        <h6>Date: {{ compet.data_start_competition|date:"SHORT_DATE_FORMAT" }} -
+                                        <h6><p class="font-weight-bold d-inline">
+                                            Date:</p> {{ compet.data_start_competition|date:"SHORT_DATE_FORMAT" }} -
                                             {{ compet.data_finish_competition|date:"SHORT_DATE_FORMAT" }}</h6>
                                     </div>
                                     <div class="container row">
-                                        <h6>Time: {{ compet.data_start_competition|time }}
+                                        <h6><p class="font-weight-bold d-inline">
+                                            Time:</p> {{ compet.data_start_competition|time }}
                                             - {{ compet.data_finish_competition|time }}</h6>
                                     </div>
                                 </div>
