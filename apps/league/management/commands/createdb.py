@@ -79,6 +79,20 @@ class Command(BaseCommand):
                                                                              microsecond=182371), team_id=team.id)
         team.save()
 
+        team = Team.objects.create(name='Patatas de Gimeno')
+        team.members.add(self.USERS['latra'])
+        team.members.add(self.USERS['Oriolac'])
+        team.members.add(self.USERS['Marta99'])
+        team.members.add(self.USERS['Doasy'])
+        team.competition = comp
+        team.ranking = Ranking.create(100)
+        team.submition = Submit.objects.create(description='Submition of Patatas de Gimeno',
+                                               githuburl='https://github.com/Oriolac/codeleague/',
+                                               submit_date=datetime.datetime(year=2016, month=5, day=10, hour=20,
+                                                                             minute=23, second=00,
+                                                                             microsecond=182371), team_id=team.id)
+        team.save()
+
         comp = Competition.objects.create(title='II Blockchain League',
                                           description='Now it comes the II Blockhain League sponsered by Amazon.',
                                           owner=admin,
@@ -117,6 +131,7 @@ class Command(BaseCommand):
         comp.categories.add(cats[0])
         comp.categories.add(cats[2])
         comp.save()
+
         comp = Competition.objects.create(title='I Deep Learning League',
                                           description='LleidaHack has creted the first Deep Learning League. You can join the league before competition starts.',
                                           owner=admin,
@@ -138,6 +153,29 @@ class Command(BaseCommand):
         comp.categories.add(cats[4])
         comp.categories.add(cats[5])
         comp.save()
+
+        comp = Competition.objects.create(title='II Deep Learning League',
+                                          description='LleidaHack has creted the second Deep Learning League. You can join the league before competition starts.',
+                                          owner=admin,
+                                          data_start_inscription=datetime.datetime(year=2018, month=4, day=10, hour=11,
+                                                                                   minute=55, second=00,
+                                                                                   microsecond=182371),
+                                          data_finish_inscription=datetime.datetime(year=2023, month=5, day=11, hour=11,
+                                                                                    minute=12, second=00,
+                                                                                    microsecond=182371),
+                                          data_start_competition=datetime.datetime(year=2020, month=5, day=15, hour=20,
+                                                                                   minute=30, second=00,
+                                                                                   microsecond=182371),
+                                          data_finish_competition=datetime.datetime(year=2020, month=5, day=31, hour=20,
+                                                                                    minute=30, second=00,
+                                                                                    microsecond=182371),
+                                          )
+        comp.categories.add(cats[1])
+        comp.categories.add(cats[3])
+        comp.categories.add(cats[4])
+        comp.categories.add(cats[5])
+        comp.save()
+
         comp = Competition.objects.create(title='I Data Jam',
                                           description='Data Jam is a competition where the teams have to develop programs to solve some high-complex problems. Are you prepared?',
                                           owner=admin,
@@ -159,6 +197,44 @@ class Command(BaseCommand):
 
         comp = Competition.objects.create(title='II Data Jam',
                                           description='Data Jam is a competition where the teams have to develop programs to solve some high-complex problems. Are you prepared?',
+                                          owner=admin,
+                                          data_start_inscription=datetime.datetime(year=2017, month=3, day=19, hour=11,
+                                                                                   minute=55, second=00,
+                                                                                   microsecond=182371),
+                                          data_finish_inscription=datetime.datetime(year=2023, month=4, day=20, hour=11,
+                                                                                    minute=12, second=00,
+                                                                                    microsecond=182371),
+                                          data_start_competition=datetime.datetime(year=2019, month=5, day=10, hour=20,
+                                                                                   minute=23, second=00,
+                                                                                   microsecond=182371),
+                                          data_finish_competition=datetime.datetime(year=2024, month=5, day=31, hour=21,
+                                                                                    minute=16, second=00,
+                                                                                    microsecond=182371),
+                                          )
+        comp.categories.add(cats[6])
+        comp.save()
+
+        comp = Competition.objects.create(title='III Data Jam',
+                                          description='Data Jam is a competition where the teams have to develop programs to solve some high-complex problems. Are you prepared? Here it comes the 3rd edition!',
+                                          owner=admin,
+                                          data_start_inscription=datetime.datetime(year=2017, month=3, day=19, hour=11,
+                                                                                   minute=55, second=00,
+                                                                                   microsecond=182371),
+                                          data_finish_inscription=datetime.datetime(year=2023, month=4, day=20, hour=11,
+                                                                                    minute=12, second=00,
+                                                                                    microsecond=182371),
+                                          data_start_competition=datetime.datetime(year=2019, month=5, day=10, hour=20,
+                                                                                   minute=23, second=00,
+                                                                                   microsecond=182371),
+                                          data_finish_competition=datetime.datetime(year=2024, month=5, day=31, hour=21,
+                                                                                    minute=16, second=00,
+                                                                                    microsecond=182371),
+                                          )
+        comp.categories.add(cats[6])
+        comp.save()
+
+        comp = Competition.objects.create(title='I Cybersecurity League',
+                                          description='For lovers of computer security, here it comes the first edition of the Cybersecurity League',
                                           owner=admin,
                                           data_start_inscription=datetime.datetime(year=2017, month=3, day=19, hour=11,
                                                                                    minute=55, second=00,
