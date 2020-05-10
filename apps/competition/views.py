@@ -5,7 +5,7 @@ from django.views.generic.edit import UpdateView
 from django.views import generic
 from django.shortcuts import render
 from apps.competition.forms import CompetitionCreationForm, TeamCreationForm, TeamJoinForm, TeamLeaveForm, PublishAnswerForm
-from apps.league.models import Team, Competition, Category, Files
+from apps.league.models import Team, Competition, Category, Files, Ranking
 import os, boto3, datetime
 
 s3 = boto3.resource('s3', aws_access_key_id=str(os.getenv('AWS_KEY')), aws_secret_access_key=str(os.getenv('AWS_SECRET')))
@@ -260,3 +260,30 @@ class CompetitionFinish(LoginRequiredMixin, UserPassesTestMixin, generic.Templat
         context['teams'] = teams
         context.update(kwargs)
         return super().get_context_data(**context)
+
+class RateAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+    context_object_name = 'competition'
+    template_name = 'competition/rate.html'
+    queryset = Competition.objects.all()
+    fields = []
+    def test_func(self):
+        competition = Competition.objects.get(pk=self.kwargs['pk'])
+        return competition.owner.pk == self.request.user.pk and not competition.finalized 
+    def get_context_data(self, **kwargs):
+        context = {}
+        context['groups'] = Team.objects.filter(competition=self.kwargs['pk'], submition__isnull=False)
+        return super().get_context_data(**context)
+    def form_valid(self, form):
+        print(self.request.POST)
+        competition = Competition.objects.get(pk=self.kwargs['pk'])
+        teams = Team.objects.filter(competition=competition, submition__isnull=False)
+        for team in teams:
+            team.ranking = Ranking.create(self.request.POST.get("puntuation" + str(team.id)))
+            team.ranking.save()
+            print(team.ranking)
+            team.save()
+        competition.finalized = True
+        competition.save()
+        return http.HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self):
+        return reverse_lazy('competition:detail', kwargs={'pk': self.kwargs['pk']})
