@@ -5,8 +5,8 @@
 {% block content %}
     <div class="jumbotron">
 
-        <div class="container">
-            {% if competition.owner != user and competition.is_inscription_opened and haveTeam == False%}
+        <a class="container">
+            {% if competition.owner != user and competition.is_inscription_opened and not haveTeam %}
             <a href='{% url 'competition:create-team' competition.id %}' class="btn btn-primary float-right btn-lg">Create a Group!
             </a>
             {% elif competition.owner == user%}
@@ -17,7 +17,7 @@
                          src="{% static 'imgs/icons/edit.png' %}">Edit
                 </a>
                 </div>
-                {% if competition.is_competition_open is False%}
+                {% if not competition.is_competition_open %}
                 <div class="float-right pr-3">
                 <a href="{% url 'competition:delete' competition.pk %}" class="btn btn-danger float-right">Delete Competition</a>
                 </div>
