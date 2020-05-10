@@ -16,7 +16,7 @@
                                     {% endif %}
                                     {{ group.name }}</h4>
                                     <h6 name="members">{{ group.members.all|length }}/4 members</h6>
-                                    {% if competition.finalized and group.ranking %}
+                                    {% if competition.finalized and group.submition %}
                                         <h6> Puntuation: {{group.ranking.score}} </h6>
                                     {% elif competition.finalized %}
                                     <h6> Not presented &#128547; </h6>
@@ -63,7 +63,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% elif competition.finalized and group.ranking %}
+                                    {% elif competition.finalized and group.submition %}
                                         {% if foo_num == 1 %}
                                         <img src="/static/imgs/icons/Oro.png" alt="First place"width="100px" class="rounded float-right"  >
                                         {% elif foo_num == 2%}

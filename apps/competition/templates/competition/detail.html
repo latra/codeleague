@@ -6,7 +6,6 @@
 {% load static %}
 {% block title %}{{competition.title}}{% endblock %}
 {% block content %}
-{{data}}
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
     var a = {{ data|safe }};
@@ -25,7 +24,7 @@
                     2]);
         var options = {
             title: "Puntuation statistics",
-            width: 600,
+            width: 380,
             height: 400,
             bar: {groupWidth: "95%"},
             legend: { position: "none" },
@@ -78,14 +77,15 @@
                 </div>
 
             </div>
-            {% if competition.finalized %}
-            <div class="card ">
-                <div class="col-8" id="columnchart_values"></div>
-            </div>
-            {% endif %}
+
             <div class="row">
                 <div class="col-4">
                     <ul class="list-unstyled">
+                        {% if competition.finalized %}
+                        <div class="card ">
+                            <div class="" id="columnchart_values"></div>
+                        </div>
+                        {% endif %}
                     {% if  competition.files.all|length > 0 %}
                         <h3 class="mt-0 mb-1">Files</h3>
                         {% for file in files %}

@@ -147,9 +147,9 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         context['data'] = [["puntuation", "table", { 'role': 'style' }]]
 
         context['user'] = self.request.user
-        context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg)).order_by('ranking')
+        context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg)).order_by('-ranking__score')
         context['haveTeam'] = False
-        for group in Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg)).order_by('ranking'):
+        for group in context['groups']:
             print(group)
             if group.submition and len(context['data']) < 10:
                 context['data'].append([group.name, int(group.ranking.score), 'color: #%02X%02X%02X' % (r(),r(),r())])
@@ -350,7 +350,8 @@ class RateAnswerCompetition(LoginRequiredMixin, UserPassesTestMixin, generic.Cre
                 print(team.ranking)
                 team.save()
             else:
-                team.ranking = None
+                team.ranking = Ranking.create(0)
+                team.ranking.save()
                 team.save()
         competition.finalized = True
         competition.save()
