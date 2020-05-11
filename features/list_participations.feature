@@ -18,7 +18,7 @@ Feature: List user participations
   Scenario: List all competitions in which we have participated
     Given I login as user "user1" with password "password"
     When I view participations of user "user1"
-    Then I'm at "accounts/u/1/participations/"
+    Then I'm at "accounts/u/2/participations/"
     Then I'm viewing a list of all competitions "user1" has participated
       | title        |
       | Competition1 |
@@ -27,4 +27,4 @@ Feature: List user participations
   Scenario: Try to list all participations in which we have participated but not logged in
     Given I'm not logged in
     When I view participations of user "user1"
-    Then Need to login to have "accounts/u/1/participations/" link available
+    Then Need to login to have "accounts/u/2/participations/" link available
