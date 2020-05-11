@@ -147,12 +147,19 @@ class CompetitionDetail(LoginRequiredMixin, generic.DetailView, generic.CreateVi
         context['data'] = [["puntuation", "table", { 'role': 'style' }]]
 
         context['user'] = self.request.user
-        context['groups'] = Team.objects.filter(competition=self.kwargs.get(self.pk_url_kwarg)).order_by('-ranking__score')
+        competition = Competition.objects.get(pk=self.kwargs.get('pk'))
+        teams_of_competition = Team.objects.filter(competition=competition)
+        context['groups'] = teams_of_competition.order_by('-ranking__score')
         context['haveTeam'] = False
         for group in context['groups']:
             print(group)
             if group.submition and len(context['data']) < 10:
-                context['data'].append([group.name, int(group.ranking.score), 'color: #%02X%02X%02X' % (r(),r(),r())])
+                if group.ranking:
+                    context['data'].append(
+                        [group.name, int(group.ranking.score), 'color: #%02X%02X%02X' % (r(), r(), r())])
+                else:
+                    context['data'].append(
+                        [group.name, 0, 'color: #%02X%02X%02X' % (r(), r(), r())])
             if context['user'] in group.members.all():
                 context['haveTeam'] = True
                 break
