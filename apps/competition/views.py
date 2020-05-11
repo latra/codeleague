@@ -225,7 +225,7 @@ class SearchCompetitions(LoginRequiredMixin, generic.TemplateView):
     template_name = 'search/list.html'
 
     def get_context_data(self, **kwargs):
-        query = self.request.GET.get('q')
+        query = self.request.GET.get('q-comp')
         competitions = Competition.objects.filter(title__contains=query).union(
             Competition.objects.filter(description__contains=query))
         context = {'query': query, 'competitions': competitions}
